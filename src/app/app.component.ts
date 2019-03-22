@@ -11,6 +11,7 @@ import * as _ from 'underscore';
 export class AppComponent {
   name;
   freq;
+  freqData100;
 
   constructor(private soundService: SoundAnalyzerService) {
     this.soundService.getUserMedia().subscribe(
@@ -24,6 +25,7 @@ export class AppComponent {
     this.name = 'Success';
     const process = () => {
       var freqData = this.soundService.processSound(stream);
+      this.freqData100 = _.max(freqData);
       this.freq = _.max(freqData);
       requestAnimationFrame(process);
     }

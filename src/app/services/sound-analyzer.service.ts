@@ -40,4 +40,20 @@ export class SoundAnalyzerService {
     return this.dataArray;    
   }
 
+
+  // private visualize() {
+  //   var canvas = document.querySelector('canvas');
+  //   var drawContext = canvas.getContext("2d");
+  //   drawContext.clearRect(0, 0, canvas.width, canvas.height);
+
+  //   for (var i = 0; i < this.data.length; i++) {
+  //     var barHeight = this.data[i]/256*canvas.height;
+  //     var topOffset = canvas.height - barHeight - 1;
+  //     var barWidth = canvas.width/this.data.length;
+  //     var hue = i/this.data.length * 360;
+  //     drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+  //     drawContext.fillRect(i*barWidth, topOffset, barWidth, barHeight);
+  //   }
+  // }
+
 }
