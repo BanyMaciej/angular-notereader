@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class SoundAnalyzerService {
   private audioContext;
-  private analyser;
+  public analyser;
   private oscilator;
   private gainNode;
 
@@ -28,7 +28,7 @@ export class SoundAnalyzerService {
 
   public init(stream) {
     this.audioSource = this.audioContext.createMediaStreamSource(stream);
-    this.analyser.fftSize = 512;
+    this.analyser.fftSize = 2048;
     this.analyser.minDecibels = -45;
     this.audioSource.connect(this.analyser);
     this.oscilator.connect(this.audioContext.destination);
@@ -38,6 +38,10 @@ export class SoundAnalyzerService {
   public processSound(stream): Uint8Array {
     this.analyser.getByteFrequencyData(this.dataArray);
     return [].slice.call(this.dataArray);    
+  }
+
+  public arrayIndexToFrequency(index: number): number {
+    return index * this.audioContext.sampleRate / this.analyser.fftSize;
   }
 
 }
