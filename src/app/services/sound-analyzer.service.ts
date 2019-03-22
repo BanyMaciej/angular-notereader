@@ -28,7 +28,7 @@ export class SoundAnalyzerService {
 
   public init(stream) {
     this.audioSource = this.audioContext.createMediaStreamSource(stream);
-    this.analyser.fftSize = 2048;
+    this.analyser.fftSize = 512;
     this.analyser.minDecibels = -45;
     this.audioSource.connect(this.analyser);
     this.oscilator.connect(this.audioContext.destination);
@@ -37,23 +37,7 @@ export class SoundAnalyzerService {
 
   public processSound(stream): Uint8Array {
     this.analyser.getByteFrequencyData(this.dataArray);
-    return this.dataArray;    
+    return [].slice.call(this.dataArray);    
   }
-
-
-  // private visualize() {
-  //   var canvas = document.querySelector('canvas');
-  //   var drawContext = canvas.getContext("2d");
-  //   drawContext.clearRect(0, 0, canvas.width, canvas.height);
-
-  //   for (var i = 0; i < this.data.length; i++) {
-  //     var barHeight = this.data[i]/256*canvas.height;
-  //     var topOffset = canvas.height - barHeight - 1;
-  //     var barWidth = canvas.width/this.data.length;
-  //     var hue = i/this.data.length * 360;
-  //     drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-  //     drawContext.fillRect(i*barWidth, topOffset, barWidth, barHeight);
-  //   }
-  // }
 
 }
