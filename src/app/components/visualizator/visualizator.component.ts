@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { SoundAnalyzerService } from '../../services/sound-analyzer.service';
+import { NotesRecognizerService } from '../../services/notes-recognizer.service';
 import * as _ from 'underscore';
 
 export interface IFrequency {
@@ -16,12 +17,13 @@ export class VisualizatorComponent implements OnChanges {
   @Input() data;
   mainFreq;
 
-  constructor(private soundAnalyzerService: SoundAnalyzerService) {}
+  constructor(private soundAnalyzerService: SoundAnalyzerService,
+              private notesRecognizerService: NotesRecognizerService) {}
 
   ngOnChanges(changes) {
-    console.log("changes!");
     this.visualize();
     this.mainFreq = this.calculateMainFreq();
+    console.log(this.notesRecognizerService.calculateSemitones(this.mainFreq));
   }
 
   private visualize() {

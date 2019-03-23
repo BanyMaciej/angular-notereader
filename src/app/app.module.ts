@@ -6,12 +6,13 @@ import { AppComponent } from './app.component';
 import { HelloComponent } from './hello.component';
 import { SoundAnalyzerService } from './services/sound-analyzer.service';
 import { VisualizatorComponent } from './components/visualizator/visualizator.component';
+import { NotesRecognizerService } from './services/notes-recognizer.service';
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule ],
   declarations: [ AppComponent, VisualizatorComponent, HelloComponent ],
   bootstrap:    [ AppComponent ],
-  providers:    [SoundAnalyzerService]
+  providers:    [SoundAnalyzerService, NotesRecognizerService]
 })
 export class AppModule {
 }
