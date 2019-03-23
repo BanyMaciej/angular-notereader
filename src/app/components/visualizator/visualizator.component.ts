@@ -16,6 +16,7 @@ export interface IFrequency {
 export class VisualizatorComponent implements OnChanges {
   @Input() data;
   mainFreq;
+  note;
 
   constructor(private soundAnalyzerService: SoundAnalyzerService,
               private notesRecognizerService: NotesRecognizerService) {}
@@ -23,7 +24,9 @@ export class VisualizatorComponent implements OnChanges {
   ngOnChanges(changes) {
     this.visualize();
     this.mainFreq = this.calculateMainFreq();
-    console.log(this.notesRecognizerService.calculateSemitones(this.mainFreq));
+    var semitones = this.notesRecognizerService.calculateSemitones(this.mainFreq);
+    console.log(semitones);
+    this.note = this.notesRecognizerService.semitonesToNote(semitones);
   }
 
   private visualize() {
