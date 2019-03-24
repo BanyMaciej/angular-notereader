@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IFrequency } from '../models/ifrequency';
+import * as _ from 'underscore';
 
 @Injectable()
 export class SoundAnalyzerService {
   private audioContext;
-  public analyser;
+  private analyser;
   private oscilator;
   private gainNode;
 
@@ -18,6 +20,10 @@ export class SoundAnalyzerService {
     this.gainNode = this.audioContext.createGain();
   }
 
+  public getAnalyser() {
+    return this.analyser;
+  }
+
   public getUserMedia(): Observable<MediaStream> {
     return new Observable(o => {
       navigator.mediaDevices.getUserMedia({audio: true, video: false})
@@ -29,7 +35,9 @@ export class SoundAnalyzerService {
   public init(stream) {
     this.audioSource = this.audioContext.createMediaStreamSource(stream);
     this.analyser.fftSize = 2048;
-    this.analyser.minDecibels = -45;
+		this.analyser.minDecibels = -70;
+		this.analyser.maxDecibels = -10;
+		this.analyser.smoothingTimeConstant = 0.85;
     this.audioSource.connect(this.analyser);
     this.oscilator.connect(this.audioContext.destination);
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
@@ -44,4 +52,43 @@ export class SoundAnalyzerService {
     return index * this.audioContext.sampleRate / this.analyser.fftSize;
   }
 
+  public calculateMainFreq(data) {
+    const weightedAvg = (values: IFrequency[]) => {
+      var wages = _.chain(values).map(f => f.amplitude * f.frequency).reduce((m, v) => m + v, 0).value();
+      var wagesSum = _.reduce(values, (m, v) => m + v.amplitude, 0);
+      return wages/wagesSum;
+
+    }
+
+    var filtered = _.chain(data).map(this.mapToFreq).filter(f => f.amplitude > 0).value();
+
+    return weightedAvg(filtered);
+  }
+
+  public group(input) {
+    var data = _.map(input, this.mapToFreq);
+    var output = [], temp = [];
+    var grouping = false;
+    _.forEach(data, item => {
+      if(item.amplitude > 0) {
+        grouping = true;
+        temp.push(item);
+      } else {
+        if(grouping) {
+          output.push(temp);
+          temp = [];
+        }
+        grouping = false;
+      }
+    })
+    return output
+  }
+
+  private mapToFreq: (value: number, index: number) => IFrequency = (value, index) => {
+      var freq = this.arrayIndexToFrequency(index);
+      return {
+        frequency: freq,
+        amplitude: value
+      };
+    }
 }

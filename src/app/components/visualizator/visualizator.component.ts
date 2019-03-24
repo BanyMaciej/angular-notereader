@@ -3,11 +3,6 @@ import { SoundAnalyzerService } from '../../services/sound-analyzer.service';
 import { NotesRecognizerService } from '../../services/notes-recognizer.service';
 import * as _ from 'underscore';
 
-export interface IFrequency {
-  frequency: number;
-  amplitude: number;
-}
-
 @Component({
   selector: 'visualizator',
   templateUrl: './visualizator.component.html',
@@ -18,14 +13,13 @@ export class VisualizatorComponent implements OnChanges {
   mainFreq;
   note;
 
-  constructor(private soundAnalyzerService: SoundAnalyzerService,
+  constructor(private soundAnalyserService: SoundAnalyzerService,
               private notesRecognizerService: NotesRecognizerService) {}
 
   ngOnChanges(changes) {
     this.visualize();
-    this.mainFreq = this.calculateMainFreq();
+    this.mainFreq = this.soundAnalyserService.calculateMainFreq(this.data);
     var semitones = this.notesRecognizerService.calculateSemitones(this.mainFreq);
-    console.log(semitones);
     this.note = this.notesRecognizerService.semitonesToNote(semitones);
   }
 
@@ -46,23 +40,9 @@ export class VisualizatorComponent implements OnChanges {
     }
   }
 
-  private calculateMainFreq() {
-    const mapToFreq: (value: number, index: number) => IFrequency = (value, index) => {
-      var freq = this.soundAnalyzerService.arrayIndexToFrequency(index);
-      return {
-        frequency: freq,
-        amplitude: value
-      };
-    }
-    const weightedAvg = (values: IFrequency[]) => {
-      var wages = _.chain(values).map(f => f.amplitude * f.frequency).reduce((m, v) => m + v, 0).value();
-      var wagesSum = _.reduce(values, (m, v) => m + v.amplitude, 0);
-      return wages/wagesSum;
-
-    }
-
-    var filtered = _.chain(this.data).map(mapToFreq).filter(f => f.amplitude > 0).value();
-
-    return weightedAvg(filtered);
+  public click() {
+    console.log(this.soundAnalyserService.group(this.data));
   }
+
+  
 }
