@@ -28,8 +28,8 @@ export class NotesRecognizerService {
       return 12 * Math.log(frequency/this.refA4Frequency)/Math.log(2);
   }
 
-  public semitonesToNote(semitones: number) {
-    return this.semitonesToNoteMapping[Math.round(semitones)%12];
+  public semitonesToNote(semitones: number): string {
+    return this.semitonesToNoteMapping[Math.round(semitones)%12] + (Math.floor(semitones/12)+4);
   }
 
 }

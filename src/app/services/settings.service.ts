@@ -20,5 +20,4 @@ export class SettingsService {
   set maxDecibels(maxDecibels: number) {
     this._maxDecibels = maxDecibels;
   }
-
 }
