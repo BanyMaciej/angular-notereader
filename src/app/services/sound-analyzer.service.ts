@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IFrequency } from '../models/ifrequency';
+import { SettingsService } from './settings.service';
 import * as _ from 'underscore';
 
 @Injectable()
@@ -13,7 +14,7 @@ export class SoundAnalyzerService {
   private audioSource;
   private dataArray;
 
-  constructor() { 
+  constructor(private settingsService: SettingsService) { 
     this.audioContext = new AudioContext();
     this.analyser = this.audioContext.createAnalyser();
     this.oscilator = this.audioContext.createOscillator();
@@ -32,11 +33,17 @@ export class SoundAnalyzerService {
     })
   }
 
+  public updateAnalyserSettings() {
+    console.log("sound nalayzer update!");
+		this.analyser.minDecibels = this.settingsService.minDecibels;
+		this.analyser.maxDecibels = this.settingsService.maxDecibels;
+  }
+
   public init(stream) {
     this.audioSource = this.audioContext.createMediaStreamSource(stream);
     this.analyser.fftSize = 2048;
 		this.analyser.minDecibels = -45;
-		// this.analyser.maxDecibels = -10;
+		this.analyser.maxDecibels = -10;
 		// this.analyser.smoothingTimeConstant = 0.85;
     this.audioSource.connect(this.analyser);
     this.oscilator.connect(this.audioContext.destination);

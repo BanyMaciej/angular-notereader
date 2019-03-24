@@ -1,0 +1,7 @@
+<label for="decibelsSettings">Min i max decybeli</label>
+<ng5-slider id="deciblesSettings" 
+  [(value)]="minDecibels" 
+  [(highValue)]="maxDecibels" 
+  [options]="options"
+  (userChangeEnd)="onUserChangeEnd($event)">
+</ng5-slider>

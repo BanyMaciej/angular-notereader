@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { Ng5SliderModule } from 'ng5-slider';
 
 import { AppComponent } from './app.component';
 import { SoundAnalyzerService } from './services/sound-analyzer.service';
@@ -10,7 +11,7 @@ import { SettingsService } from './services/settings.service';
 import { SettingsComponent } from './components/settings/settings.component'
 
 @NgModule({
-  imports:      [ BrowserModule, FormsModule ],
+  imports:      [ BrowserModule, FormsModule, Ng5SliderModule ],
   declarations: [ AppComponent, VisualizatorComponent, SettingsComponent ],
   bootstrap:    [ AppComponent ],
   providers:    [SoundAnalyzerService, NotesRecognizerService, SettingsService]
