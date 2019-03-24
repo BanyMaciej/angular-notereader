@@ -12,6 +12,7 @@ export class VisualizatorComponent implements OnChanges {
   @Input() data;
   mainFreq;
   note;
+  myRange;
 
   constructor(private soundAnalyserService: SoundAnalyzerService,
               private notesRecognizerService: NotesRecognizerService) {}
@@ -38,11 +39,5 @@ export class VisualizatorComponent implements OnChanges {
         drawContext.fillRect(i*barWidth, topOffset, barWidth, barHeight);
       }
     }
-  }
-
-  public click() {
-    console.log(this.soundAnalyserService.group(this.data));
-  }
-
-  
+  }  
 }

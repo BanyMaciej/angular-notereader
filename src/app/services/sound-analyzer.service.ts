@@ -35,9 +35,9 @@ export class SoundAnalyzerService {
   public init(stream) {
     this.audioSource = this.audioContext.createMediaStreamSource(stream);
     this.analyser.fftSize = 2048;
-		this.analyser.minDecibels = -70;
-		this.analyser.maxDecibels = -10;
-		this.analyser.smoothingTimeConstant = 0.85;
+		this.analyser.minDecibels = -45;
+		// this.analyser.maxDecibels = -10;
+		// this.analyser.smoothingTimeConstant = 0.85;
     this.audioSource.connect(this.analyser);
     this.oscilator.connect(this.audioContext.destination);
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
@@ -52,21 +52,15 @@ export class SoundAnalyzerService {
     return index * this.audioContext.sampleRate / this.analyser.fftSize;
   }
 
-  public calculateMainFreq(data) {
-    const weightedAvg = (values: IFrequency[]) => {
-      var wages = _.chain(values).map(f => f.amplitude * f.frequency).reduce((m, v) => m + v, 0).value();
-      var wagesSum = _.reduce(values, (m, v) => m + v.amplitude, 0);
-      return wages/wagesSum;
+  public calculateMainFreq(data: Array<number>) {
+    var frequencyArray = _.map(data, this.mapToFreq);
+    var grouped = this.group(frequencyArray);
+    var maxFrequencyGroup = _.max(grouped, group => _.max(group, item => item.frequency).amplitude);
 
-    }
-
-    var filtered = _.chain(data).map(this.mapToFreq).filter(f => f.amplitude > 0).value();
-
-    return weightedAvg(filtered);
+    return this.weightedAvg(maxFrequencyGroup);
   }
 
-  public group(input) {
-    var data = _.map(input, this.mapToFreq);
+  private group(data: Array<IFrequency>) {
     var output = [], temp = [];
     var grouping = false;
     _.forEach(data, item => {
@@ -85,10 +79,17 @@ export class SoundAnalyzerService {
   }
 
   private mapToFreq: (value: number, index: number) => IFrequency = (value, index) => {
-      var freq = this.arrayIndexToFrequency(index);
-      return {
-        frequency: freq,
-        amplitude: value
-      };
-    }
+    var freq = this.arrayIndexToFrequency(index);
+    return {
+      frequency: freq,
+      amplitude: value
+    };
+  }
+
+  private weightedAvg = (values: Array<IFrequency>) => {
+    var wages = _.chain(values).map(f => f.amplitude * f.frequency).reduce((m, v) => m + v, 0).value();
+    var wagesSum = _.reduce(values, (m, v) => m + v.amplitude, 0);
+    return wages/wagesSum;
+
+  }
 }
