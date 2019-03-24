@@ -26,9 +26,9 @@ export class SettingsComponent implements OnInit {
     this.maxDecibels = localStorage.getItem("maxDecibels") || -10;
   }
 
-  onUserChangeEnd(changeContext: ChangeContext) {
-    this.settingsService.minDecibels = changeContext.value;
-    this.settingsService.maxDecibels = changeContext.highValue;
+  onUserChangeEnd(changeContext) {
+    this.settingsService.minDecibels = this.minDecibels;
+    this.settingsService.maxDecibels = this.maxDecibels;
     this.saveValues();
     this.soundAnalyserService.updateAnalyserSettings();
   }
@@ -36,5 +36,21 @@ export class SettingsComponent implements OnInit {
   private saveValues() {
     localStorage.setItem("minDecibels", this.minDecibels);
     localStorage.setItem("maxDecibels", this.maxDecibels);
+  }
+
+  private autoSetup() {
+    console.log("auto-setup");
+    const process = (ref: number) => {
+      this.minDecibels = ref;
+      this.soundAnalyserService.updateAnalyserSettings();
+      if(this.soundAnalyserService.processSound().find(a => a > 0) !== undefined) {
+        console.log("process");
+        process(ref-1);
+      } else {
+        console.log("nice!");
+        return;
+      }
+    }
+    process(-50);
   }
 }

@@ -24,7 +24,7 @@ export class AppComponent {
     this.soundService.init(stream);
     this.name = 'Success';
     const process = () => {
-      var freqData = this.soundService.processSound(stream);
+      var freqData = this.soundService.processSound();
       var gt0 = _.filter(freqData, a => a > 0);
       if(gt0.length > 0) {
         this.freqDataMost = freqData;

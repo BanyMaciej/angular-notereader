@@ -50,7 +50,7 @@ export class SoundAnalyzerService {
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
   }
 
-  public processSound(stream): Uint8Array {
+  public processSound(): Uint8Array {
     this.analyser.getByteFrequencyData(this.dataArray);
     return [].slice.call(this.dataArray);    
   }
