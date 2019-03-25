@@ -8,12 +8,13 @@ import * as _ from 'underscore';
   templateUrl: './app.component.html',
   styleUrls: [ './app.component.css' ]
 })
-export class AppComponent {
-  name;
-  freq;
+export class AppComponent implements OnInit {
+  freqData;
 
-  constructor(private soundService: SoundAnalyzerService) {
-    this.soundService.getUserMedia().subscribe(
+  constructor(private soundService: SoundAnalyzerService) {}
+
+  ngOnInit() {
+    this.soundService.getUserMedia().subscribe( 
       stream => this.processSound(stream),
       error => this.handleError(error)
     );
@@ -21,18 +22,18 @@ export class AppComponent {
 
   public processSound(stream) {
     this.soundService.init(stream);
-    this.name = 'Success';
     const process = () => {
-      var freqData = this.soundService.processSound(stream);
-      this.freq = _.max(freqData);
+      var freqData = this.soundService.processSound();
+      var gt0 = _.filter(freqData, a => a > 0);
+      if(gt0.length > 0) {
+        this.freqData = freqData;
+      }
       requestAnimationFrame(process);
     }
     process();
   }
 
   private handleError(error) {
-    this.name = 'Error: ' + error;
-    this.freq = "Error";
     console.log(error);
   }
 }
