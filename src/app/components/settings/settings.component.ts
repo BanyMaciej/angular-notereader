@@ -18,6 +18,15 @@ export class SettingsComponent implements OnInit {
     minRange: 10
   };
 
+  minFreq = 200;
+  maxFreq = 2000;
+  frequencySliderOptions: Options = {
+    floor: 0,
+    ceil: 10000,
+    noSwitching: true,
+    minRange: 1000
+  };
+
   constructor(private settingsService: SettingsService,
               private soundAnalyserService: SoundAnalyzerService) { }
 
@@ -26,7 +35,14 @@ export class SettingsComponent implements OnInit {
     this.maxDecibels = localStorage.getItem("maxDecibels") || -10;
   }
 
-  onUserChangeEnd(changeContext) {
+  decibelsChangeEnd(changeContext) {
+    this.settingsService.minDecibels = this.minDecibels;
+    this.settingsService.maxDecibels = this.maxDecibels;
+    this.saveValues();
+    this.soundAnalyserService.updateAnalyserSettings();
+  }
+
+  frequencyChangeEnd(changeContext) {
     this.settingsService.minDecibels = this.minDecibels;
     this.settingsService.maxDecibels = this.maxDecibels;
     this.saveValues();

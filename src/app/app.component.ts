@@ -9,9 +9,7 @@ import * as _ from 'underscore';
   styleUrls: [ './app.component.css' ]
 })
 export class AppComponent {
-  name;
-  freq;
-  freqDataMost;
+  freqData;
 
   constructor(private soundService: SoundAnalyzerService) {
     this.soundService.getUserMedia().subscribe(
@@ -22,22 +20,18 @@ export class AppComponent {
 
   public processSound(stream) {
     this.soundService.init(stream);
-    this.name = 'Success';
     const process = () => {
       var freqData = this.soundService.processSound();
       var gt0 = _.filter(freqData, a => a > 0);
       if(gt0.length > 0) {
-        this.freqDataMost = freqData;
+        this.freqData = freqData;
       }
-      this.freq = _.max(freqData);
       requestAnimationFrame(process);
     }
     process();
   }
 
   private handleError(error) {
-    this.name = 'Error: ' + error;
-    this.freq = "Error";
     console.log(error);
   }
 }

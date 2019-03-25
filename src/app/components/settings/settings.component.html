@@ -3,5 +3,12 @@
   [(value)]="minDecibels" 
   [(highValue)]="maxDecibels" 
   [options]="decibelsSliderOptions"
-  (userChangeEnd)="onUserChangeEnd($event)">
+  (userChangeEnd)="decibelsChangeEnd($event)">
+</ng5-slider>
+<label for="frequencySettings" >Min i max częstotliwości</label>
+<ng5-slider id="frequencySettings" 
+  [(value)]="minFreq" 
+  [(highValue)]="maxFreq" 
+  [options]="frequencySliderOptions"
+  (userChangeEnd)="frequencyChangeEnd($event)">
 </ng5-slider>
