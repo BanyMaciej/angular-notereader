@@ -8,11 +8,13 @@ import * as _ from 'underscore';
   templateUrl: './app.component.html',
   styleUrls: [ './app.component.css' ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   freqData;
 
-  constructor(private soundService: SoundAnalyzerService) {
-    this.soundService.getUserMedia().subscribe(
+  constructor(private soundService: SoundAnalyzerService) {}
+
+  ngOnInit() {
+    this.soundService.getUserMedia().subscribe( 
       stream => this.processSound(stream),
       error => this.handleError(error)
     );
