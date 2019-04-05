@@ -12,7 +12,6 @@ export class SoundAnalyzerService {
   private gainNode;
 
   private audioSource;
-  private dataArray;
 
   constructor(private settingsService: SettingsService) { 
     this.audioContext = new AudioContext();
@@ -47,14 +46,14 @@ export class SoundAnalyzerService {
 		// this.analyser.smoothingTimeConstant = 0.85;
     this.audioSource.connect(this.analyser);
     this.oscilator.connect(this.audioContext.destination);
-    this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
   }
 
   public processSound(): Uint8Array {
-    this.analyser.getByteFrequencyData(this.dataArray);
-    this.squareFilter();
+    var dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+    this.analyser.getByteFrequencyData(dataArray);
+    dataArray = _.map(dataArray, this.squareFilter);
 
-    return [].slice.call(this.dataArray);    
+    return [].slice.call(dataArray);    
   }
 
   public arrayIndexToFrequency(index: number): number {
@@ -102,12 +101,16 @@ export class SoundAnalyzerService {
 
   }
 
-  private squareFilter() {
+  private squareFilter = (v: number, i: number) => {
     var min = this.settingsService.minFrequency;
     var max = this.settingsService.maxFrequency;
-    _.filter(this.dataArray, (a, i) => {
-      var mapped = this.mapToFreq(a, i);
-      return mapped.frequency >= min && mapped.frequency <= max;
-    })
+    var freq = this.mapToFreq(v, i);
+    return (freq.frequency > min && freq.frequency < max) ? v : 0;
+  }
+
+  public log() {
+    var min = this.settingsService.minFrequency;
+    var max = this.settingsService.maxFrequency;
+    console.log(min + " - " + max)
   }
 }

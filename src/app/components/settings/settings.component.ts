@@ -46,7 +46,7 @@ export class SettingsComponent implements OnInit {
   }
 
   frequencyChangeEnd(changeContext) {
-    this.settingsService.minDecibels = this.minDecibels;
+    this.settingsService.minFrequency = this.minFrequency;
     this.settingsService.maxFrequency = this.maxFrequency;
     this.saveValues();
     this.soundAnalyserService.updateAnalyserSettings();

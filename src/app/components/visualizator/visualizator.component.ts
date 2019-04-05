@@ -40,4 +40,8 @@ export class VisualizatorComponent implements OnChanges {
       }
     }
   }  
+
+  click() {
+    this.soundAnalyserService.log();
+  }
 }
