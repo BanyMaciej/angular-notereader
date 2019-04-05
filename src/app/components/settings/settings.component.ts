@@ -9,8 +9,8 @@ import { Options, ChangeContext } from 'ng5-slider';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  minDecibels;
-  maxDecibels;
+  minDecibels: number;
+  maxDecibels: number;
   decibelsSliderOptions: Options = {
     floor: -100,
     ceil: 0,
@@ -18,8 +18,8 @@ export class SettingsComponent implements OnInit {
     minRange: 10
   };
 
-  minFreq = 200;
-  maxFreq = 2000;
+  minFrequency: number = 200;
+  maxFrequency: number = 2000;
   frequencySliderOptions: Options = {
     floor: 0,
     ceil: 10000,
@@ -31,8 +31,11 @@ export class SettingsComponent implements OnInit {
               private soundAnalyserService: SoundAnalyzerService) { }
 
   ngOnInit() {
-    this.minDecibels = localStorage.getItem("minDecibels") || -50;
-    this.maxDecibels = localStorage.getItem("maxDecibels") || -10;
+    this.minDecibels = +localStorage.getItem("minDecibels") || -50;
+    this.maxDecibels = +localStorage.getItem("maxDecibels") || -10;
+
+    this.minFrequency = +localStorage.getItem("minFrequency") || 200;
+    this.maxFrequency = +localStorage.getItem("maxFrequency") || 2000;
   }
 
   decibelsChangeEnd(changeContext) {
@@ -44,14 +47,17 @@ export class SettingsComponent implements OnInit {
 
   frequencyChangeEnd(changeContext) {
     this.settingsService.minDecibels = this.minDecibels;
-    this.settingsService.maxDecibels = this.maxDecibels;
+    this.settingsService.maxFrequency = this.maxFrequency;
     this.saveValues();
     this.soundAnalyserService.updateAnalyserSettings();
   }
 
   private saveValues() {
-    localStorage.setItem("minDecibels", this.minDecibels);
-    localStorage.setItem("maxDecibels", this.maxDecibels);
+    localStorage.setItem("minDecibels", this.minDecibels.toString());
+    localStorage.setItem("maxDecibels", this.maxDecibels.toString());
+
+    localStorage.setItem("minFrequency", this.minFrequency.toString());
+    localStorage.setItem("maxFrequency", this.maxFrequency.toString());
   }
 
   private autoSetup() {

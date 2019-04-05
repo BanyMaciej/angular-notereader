@@ -52,6 +52,8 @@ export class SoundAnalyzerService {
 
   public processSound(): Uint8Array {
     this.analyser.getByteFrequencyData(this.dataArray);
+    this.squareFilter();
+
     return [].slice.call(this.dataArray);    
   }
 
@@ -98,5 +100,14 @@ export class SoundAnalyzerService {
     var wagesSum = _.reduce(values, (m, v) => m + v.amplitude, 0);
     return wages/wagesSum;
 
+  }
+
+  private squareFilter() {
+    var min = this.settingsService.minFrequency;
+    var max = this.settingsService.maxFrequency;
+    _.filter(this.dataArray, (a, i) => {
+      var mapped = this.mapToFreq(a, i);
+      return mapped.frequency >= min && mapped.frequency <= max;
+    })
   }
 }

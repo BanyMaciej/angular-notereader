@@ -8,17 +8,16 @@ export class NotesRecognizerService {
   private semitonesToNoteMapping = {
     0: "A",
     1: "A#",
-    2: "H",
-    3: "B",
-    4: "C",
-    5: "C#",
-    6: "D",
-    7: "D#",
-    8: "E",
-    9: "F",
-    10: "F#",
-    11: "G",
-    12: "G#"
+    2: "B",
+    3: "C",
+    4: "C#",
+    5: "D",
+    6: "D#",
+    7: "E",
+    8: "F",
+    9: "F#",
+    10: "G",
+    11: "G#"
   }
 
 
