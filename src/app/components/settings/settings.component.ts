@@ -36,20 +36,27 @@ export class SettingsComponent implements OnInit {
 
     this.minFrequency = +localStorage.getItem("minFrequency") || 200;
     this.maxFrequency = +localStorage.getItem("maxFrequency") || 2000;
+
+    this.updateSettings();
   }
 
   decibelsChangeEnd(changeContext) {
-    this.settingsService.minDecibels = this.minDecibels;
-    this.settingsService.maxDecibels = this.maxDecibels;
+    this.updateSettings()
     this.saveValues();
     this.soundAnalyserService.updateAnalyserSettings();
   }
 
   frequencyChangeEnd(changeContext) {
-    this.settingsService.minFrequency = this.minFrequency;
-    this.settingsService.maxFrequency = this.maxFrequency;
+    this.updateSettings();
     this.saveValues();
     this.soundAnalyserService.updateAnalyserSettings();
+  }
+
+  private updateSettings() {
+    this.settingsService.minDecibels = this.minDecibels;
+    this.settingsService.maxDecibels = this.maxDecibels;
+    this.settingsService.minFrequency = this.minFrequency;
+    this.settingsService.maxFrequency = this.maxFrequency;
   }
 
   private saveValues() {
