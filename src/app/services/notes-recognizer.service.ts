@@ -1,23 +1,25 @@
 import { Injectable } from '@angular/core';
 
+export type Note = 'A' | 'A#' | 'B' | 'C' | 'C#' | 'D' | 'D#' | 'E' | 'F' | 'F#' | 'G' | 'G#'
+
 @Injectable()
 export class NotesRecognizerService {
 
   private refA4Frequency = 440; // Hz
 
-  private semitonesToNoteMapping = {
-    0: "A",
-    1: "A#",
-    2: "B",
-    3: "C",
-    4: "C#",
-    5: "D",
-    6: "D#",
-    7: "E",
-    8: "F",
-    9: "F#",
-    10: "G",
-    11: "G#"
+  private semitonesToNoteMapping: {[diff: number]: Note} = {
+    0: 'A',
+    1: 'A#',
+    2: 'B',
+    3: 'C',
+    4: 'C#',
+    5: 'D',
+    6: 'D#',
+    7: 'E',
+    8: 'F',
+    9: 'F#',
+    10: 'G',
+    11: 'G#'
   }
 
 

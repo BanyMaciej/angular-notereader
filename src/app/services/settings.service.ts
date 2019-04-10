@@ -8,6 +8,8 @@ export class SettingsService {
   private _minFrequency = 200;
   private _maxFrequency = 2000;
 
+  private smoothingBufferSize = 4;
+
   constructor() { }
 
   get minDecibels() {
