@@ -44,6 +44,6 @@ export class VisualizerComponent implements OnChanges {
   }  
 
   click() {
-    this.smoothingsService.noteSmoother();
+    this.smoothingsService.logBuffer();
   }
 }

@@ -22,10 +22,12 @@ export class SmoothingService {
   }
 
   private rotateBuffer(nextElem: Note) {
-    this.buffer.push(nextElem);
-    if(this.buffer.length > this.settingsService.smoothingBufferSize) {
+    if(this.buffer.length >= this.settingsService.smoothingBufferSize) {
       this.buffer.shift();
+      return this.rotateBuffer(nextElem);
     }
+    this.buffer.push(nextElem);
+    
   }
 
   public logBuffer() {
