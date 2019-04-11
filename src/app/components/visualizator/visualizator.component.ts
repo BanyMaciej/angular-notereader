@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { SoundAnalyzerService } from '../../services/sound-analyzer.service';
 import { NotesRecognizerService } from '../../services/notes-recognizer.service';
+import { SmoothingService } from '../../services/smoothing.service';
 import * as _ from 'underscore';
 
 @Component({
@@ -12,16 +13,17 @@ export class VisualizatorComponent implements OnChanges {
   @Input() data;
   mainFreq;
   note;
-  myRange;
 
   constructor(private soundAnalyserService: SoundAnalyzerService,
-              private notesRecognizerService: NotesRecognizerService) {}
+              private notesRecognizerService: NotesRecognizerService,
+              private smoothingsService: SmoothingService) {}
 
   ngOnChanges(changes) {
     this.visualize();
     this.mainFreq = this.soundAnalyserService.calculateMainFreq(this.data);
-    var semitones = this.notesRecognizerService.calculateSemitones(this.mainFreq);
-    this.note = this.notesRecognizerService.semitonesToNote(semitones);
+    const semitones = this.notesRecognizerService.calculateSemitones(this.mainFreq);
+    const currentNote = this.notesRecognizerService.semitonesToNote(semitones);
+    this.note = this.smoothingsService.noteSmoother(currentNote);
   }
 
   private visualize() {
@@ -42,6 +44,6 @@ export class VisualizatorComponent implements OnChanges {
   }  
 
   click() {
-    this.soundAnalyserService.log();
+    this.smoothingsService.noteSmoother();
   }
 }

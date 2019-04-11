@@ -18,13 +18,19 @@ export class SettingsComponent implements OnInit {
     minRange: 10
   };
 
-  minFrequency: number = 200;
-  maxFrequency: number = 2000;
+  minFrequency: number;
+  maxFrequency: number;
   frequencySliderOptions: Options = {
     floor: 0,
     ceil: 10000,
     noSwitching: true,
     minRange: 1000
+  };
+
+  smoothingBufferSize: number;
+  smoothingSliderOptions: Options = {
+    floor: 0,
+    ceil: 30
   };
 
   constructor(private settingsService: SettingsService,
@@ -37,19 +43,14 @@ export class SettingsComponent implements OnInit {
     this.minFrequency = +localStorage.getItem("minFrequency") || 200;
     this.maxFrequency = +localStorage.getItem("maxFrequency") || 2000;
 
-    this.updateSettings();
-  }
+    this.smoothingBufferSize = +localStorage.getItem("smoothingBufferSize") || 10;
 
-  decibelsChangeEnd(changeContext) {
-    this.updateSettings()
-    this.saveValues();
+    this.updateSettings();
     this.soundAnalyserService.updateAnalyserSettings();
   }
 
-  frequencyChangeEnd(changeContext) {
+  onChangeEnd(changeContext) {
     this.updateSettings();
-    this.saveValues();
-    this.soundAnalyserService.updateAnalyserSettings();
   }
 
   private updateSettings() {
@@ -57,6 +58,10 @@ export class SettingsComponent implements OnInit {
     this.settingsService.maxDecibels = this.maxDecibels;
     this.settingsService.minFrequency = this.minFrequency;
     this.settingsService.maxFrequency = this.maxFrequency;
+    this.settingsService.smoothingBufferSize = this.smoothingBufferSize;
+
+    this.saveValues();
+    this.soundAnalyserService.updateAnalyserSettings();
   }
 
   private saveValues() {
@@ -65,6 +70,8 @@ export class SettingsComponent implements OnInit {
 
     localStorage.setItem("minFrequency", this.minFrequency.toString());
     localStorage.setItem("maxFrequency", this.maxFrequency.toString());
+
+    localStorage.setItem("smoothingBufferSize", this.smoothingBufferSize.toString());
   }
 
   private autoSetup() {

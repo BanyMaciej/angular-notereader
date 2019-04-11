@@ -3,12 +3,18 @@
   [(value)]="minDecibels" 
   [(highValue)]="maxDecibels" 
   [options]="decibelsSliderOptions"
-  (userChangeEnd)="decibelsChangeEnd($event)">
+  (userChangeEnd)="onChangeEnd($event)">
 </ng5-slider>
 <label for="frequencySettings" >Min i max częstotliwości</label>
 <ng5-slider id="frequencySettings" 
   [(value)]="minFrequency" 
   [(highValue)]="maxFrequency" 
   [options]="frequencySliderOptions"
-  (userChangeEnd)="frequencyChangeEnd($event)">
+  (userChangeEnd)="onChangeEnd($event)">
+</ng5-slider>
+<label for="smoothingSettings" >Kroki wygładzania</label>
+<ng5-slider id="smoothingSettings" 
+  [(value)]="smoothingBufferSize"
+  [options]="smoothingSliderOptions"
+  (userChangeEnd)="onChangeEnd($event)">
 </ng5-slider>

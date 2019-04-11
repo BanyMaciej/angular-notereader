@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-
-export type Note = 'A' | 'A#' | 'B' | 'C' | 'C#' | 'D' | 'D#' | 'E' | 'F' | 'F#' | 'G' | 'G#'
+import { Note } from '../models/note'
+import { SmoothingService } from './smoothing.service'
 
 @Injectable()
 export class NotesRecognizerService {
@@ -23,14 +23,18 @@ export class NotesRecognizerService {
   }
 
 
-  constructor() { }
+  constructor(private smoothingService: SmoothingService) { }
 
   public calculateSemitones(frequency: number) {
       return 12 * Math.log(frequency/this.refA4Frequency)/Math.log(2);
   }
 
   public semitonesToNote(semitones: number): string {
-    return this.semitonesToNoteMapping[Math.round(semitones)%12] + (Math.floor(semitones/12)+4);
+    const note = this.semitonesToNoteMapping[Math.round(semitones)%12];
+    this.smoothingService.rotateBuffer(note);
+
+    const noteWithOctave = note + (Math.floor(semitones/12)+4)
+    return noteWithOctave;
   }
 
 }

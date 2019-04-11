@@ -8,7 +8,7 @@ export class SettingsService {
   private _minFrequency = 200;
   private _maxFrequency = 2000;
 
-  private smoothingBufferSize = 4;
+  private _smoothingBufferSize = 10;
 
   constructor() { }
 
@@ -38,6 +38,14 @@ export class SettingsService {
   }
   set maxFrequency(maxFrequency: number) {
     this._maxFrequency = maxFrequency;
+  }
+
+  get smoothingBufferSize() {
+    return this._smoothingBufferSize;
+  }
+
+  set smoothingBufferSize(smoothingBufferSize: number) {
+    this._smoothingBufferSize = smoothingBufferSize;
   }
 
 }
