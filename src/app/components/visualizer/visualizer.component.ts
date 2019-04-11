@@ -5,11 +5,11 @@ import { SmoothingService } from '../../services/smoothing.service';
 import * as _ from 'underscore';
 
 @Component({
-  selector: 'visualizator',
-  templateUrl: './visualizator.component.html',
-  styleUrls: ['./visualizator.component.css']
+  selector: 'visualizer',
+  templateUrl: './visualizer.component.html',
+  styleUrls: ['./visualizer.component.css']
 })
-export class VisualizatorComponent implements OnChanges {
+export class VisualizerComponent implements OnChanges {
   @Input() data;
   mainFreq;
   note;

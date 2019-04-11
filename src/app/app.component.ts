@@ -23,12 +23,7 @@ export class AppComponent implements OnInit {
   public processSound(stream) {
     this.soundService.init(stream);
     const process = () => {
-      var freqData = this.soundService.processSound();
-      var gt0 = _.filter(freqData, a => a > 0);
-      
-      if(gt0.length > 0) {
-        this.freqData = freqData;
-      }
+      this.freqData = this.soundService.processSound();
       requestAnimationFrame(process);
     }
     process();
