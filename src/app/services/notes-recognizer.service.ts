@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Note } from '../models/note'
-import { SmoothingService } from './smoothing.service'
 
 @Injectable()
 export class NotesRecognizerService {
@@ -23,7 +22,10 @@ export class NotesRecognizerService {
   }
 
 
-  constructor(private smoothingService: SmoothingService) { }
+  constructor() { }
+
+  public 
+
 
   public calculateSemitones(frequency: number) {
       return 12 * Math.log(frequency/this.refA4Frequency)/Math.log(2);

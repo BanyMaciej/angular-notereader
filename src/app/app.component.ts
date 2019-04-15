@@ -11,6 +11,7 @@ import * as _ from 'underscore';
 export class AppComponent implements OnInit {
   freqData;
   @ViewChild('frequencyEmulator') emulator;
+  @ViewChild('visualizer') visualizer;
 
   constructor(private soundService: SoundAnalyzerService) {}
 
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
       } else {
         this.freqData = this.soundService.processSound();
       }
+      this.visualizer
       requestAnimationFrame(process);
     }
     process();

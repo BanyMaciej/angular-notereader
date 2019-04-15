@@ -38,10 +38,10 @@ export class SoundAnalyzerService {
 
   public init(stream) {
     this.audioSource = this.audioContext.createMediaStreamSource(stream);
-    this.analyser.fftSize = 4096;
+    this.analyser.fftSize = 2048;
 		this.analyser.minDecibels = -45;
 		this.analyser.maxDecibels = -10;
-		this.analyser.smoothingTimeConstant = 0.85;
+		this.analyser.smoothingTimeConstant = 0.55;
     this.gainNode.gain.value = 0;
 
     this.audioSource.connect(this.analyser);

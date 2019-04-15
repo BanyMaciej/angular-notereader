@@ -13,7 +13,7 @@ export class EmulatorComponent {
     floor: 0,
     ceil: 10000
   };
-  enabled: boolean = true;
+  enabled: boolean = false;
   soundEnabled: boolean = false;
 
   constructor(private soundService: SoundAnalyzerService) { 
