@@ -3,7 +3,7 @@ import { Options, ChangeContext } from 'ng5-slider';
 import { SoundAnalyzerService } from '../../services/sound-analyzer.service'
 
 @Component({
-  selector: 'app-emulator',
+  selector: 'emulator',
   templateUrl: './emulator.component.html',
   styleUrls: ['./emulator.component.css']
 })
@@ -13,11 +13,12 @@ export class EmulatorComponent {
     floor: 0,
     ceil: 10000
   };
-  enabled: boolean;
+  enabled: boolean = false;
 
   constructor(private soundService: SoundAnalyzerService) { }
   
   onChangeEnd(changeContext) {
+    console.log(this.enabled);
     console.log("Emulated frequency: " + this.emulatorFrequency);
   }
 

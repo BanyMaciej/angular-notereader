@@ -10,7 +10,7 @@ import * as _ from 'underscore';
 })
 export class AppComponent implements OnInit {
   freqData;
-  @ViewChild('a') emulator;
+  @ViewChild('frequencyEmulator') emulator;
 
   constructor(private soundService: SoundAnalyzerService) {}
 
@@ -24,7 +24,11 @@ export class AppComponent implements OnInit {
   public processSound(stream) {
     this.soundService.init(stream);
     const process = () => {
-      this.freqData = this.soundService.processSound();
+      if(this.emulator.enabled) {
+        this.freqData = this.emulator.generateFrequencyArray()
+      } else {
+        this.freqData = this.soundService.processSound();
+      }
       requestAnimationFrame(process);
     }
     process();
@@ -32,5 +36,9 @@ export class AppComponent implements OnInit {
 
   private handleError(error) {
     console.log(error);
+  }
+
+  public log() {
+    console.log()
   }
 }

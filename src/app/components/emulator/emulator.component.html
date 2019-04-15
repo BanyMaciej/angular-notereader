@@ -1,7 +1,12 @@
-<label for="emulatorFrequency" >Częstotliwość</label>
-<ng5-slider id="emulatorFrequency" 
-  [(value)]="emulatorFrequency"
-  [options]="emulatorSliderOptions"
-  (userChangeEnd)="onChangeEnd($event)">
-</ng5-slider>
-<input type="checkbox" [(value)]="generateFrequencyArray">
+<label>
+  <input type="checkbox" [(ngModel)]="enabled">
+  Emulacja
+</label>
+<div *ngIf="enabled">
+  <label for="emulatorFrequency" >Częstotliwość</label>
+  <ng5-slider id="emulatorFrequency" 
+    [(value)]="emulatorFrequency"
+    [options]="emulatorSliderOptions"
+    (userChangeEnd)="onChangeEnd($event)">
+  </ng5-slider>
+</div>
