@@ -2,11 +2,15 @@
   <input type="checkbox" [(ngModel)]="enabled">
   Emulacja
 </label>
+<label>
+  <input type="checkbox" [(ngModel)]="soundEnabled" (change)="soundPlayer()" [disabled]="!enabled">
+  Dźwięk
+</label>
 <div *ngIf="enabled">
   <label for="emulatorFrequency" >Częstotliwość</label>
   <ng5-slider id="emulatorFrequency" 
     [(value)]="emulatorFrequency"
     [options]="emulatorSliderOptions"
-    (userChangeEnd)="onChangeEnd($event)">
+    (userChangeEnd)="updateFrequency($event)">
   </ng5-slider>
 </div>

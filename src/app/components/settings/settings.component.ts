@@ -29,8 +29,8 @@ export class SettingsComponent implements OnInit {
 
   smoothingBufferSize: number;
   smoothingSliderOptions: Options = {
-    floor: 0,
-    ceil: 30
+    floor: 1,
+    ceil: 50
   };
 
   constructor(private settingsService: SettingsService,

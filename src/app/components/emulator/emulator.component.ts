@@ -8,18 +8,17 @@ import { SoundAnalyzerService } from '../../services/sound-analyzer.service'
   styleUrls: ['./emulator.component.css']
 })
 export class EmulatorComponent {
-  emulatorFrequency: number = 440;
+  emulatorFrequency: number = 527;
   emulatorSliderOptions: Options = {
     floor: 0,
     ceil: 10000
   };
-  enabled: boolean = false;
+  enabled: boolean = true;
+  soundEnabled: boolean = false;
 
-  constructor(private soundService: SoundAnalyzerService) { }
-  
-  onChangeEnd(changeContext) {
-    console.log(this.enabled);
-    console.log("Emulated frequency: " + this.emulatorFrequency);
+  constructor(private soundService: SoundAnalyzerService) { 
+    soundService.oscilator.start();
+    soundService.gainNode.gain.value = 0;
   }
 
   generateFrequencyArray(): Uint8Array {
@@ -27,5 +26,15 @@ export class EmulatorComponent {
     var out =  new Uint8Array(this.soundService.getAnalyser().frequencyBinCount)
     out[index] = 192;
     return out;
+  }
+
+  updateFrequency() {
+    this.soundService.oscilator.frequency.value = this.emulatorFrequency;
+  }
+
+  soundPlayer() {
+    this.soundService.oscilator.type = 'sine';
+    this.soundService.oscilator.frequency.value = this.emulatorFrequency;
+    this.soundService.gainNode.gain.value = this.soundEnabled ? 1 : 0;
   }
 }

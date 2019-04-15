@@ -8,8 +8,8 @@ import * as _ from 'underscore';
 export class SoundAnalyzerService {
   private audioContext;
   private analyser;
-  private oscilator;
-  private gainNode;
+  public oscilator;
+  public gainNode;
 
   private audioSource;
 
@@ -20,9 +20,7 @@ export class SoundAnalyzerService {
     this.gainNode = this.audioContext.createGain();
   }
 
-  public getAnalyser() {
-    return this.analyser;
-  }
+  public getAnalyser() { return this.analyser; }
 
   public getUserMedia(): Observable<MediaStream> {
     return new Observable(o => {
@@ -40,12 +38,15 @@ export class SoundAnalyzerService {
 
   public init(stream) {
     this.audioSource = this.audioContext.createMediaStreamSource(stream);
-    this.analyser.fftSize = 2048;
+    this.analyser.fftSize = 4096;
 		this.analyser.minDecibels = -45;
 		this.analyser.maxDecibels = -10;
 		this.analyser.smoothingTimeConstant = 0.85;
+    this.gainNode.gain.value = 0;
+
     this.audioSource.connect(this.analyser);
-    this.oscilator.connect(this.audioContext.destination);
+    this.oscilator.connect(this.gainNode).connect(this.audioContext.destination);
+
   }
 
   public processSound(): Uint8Array {
