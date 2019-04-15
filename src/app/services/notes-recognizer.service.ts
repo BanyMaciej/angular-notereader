@@ -31,9 +31,11 @@ export class NotesRecognizerService {
 
   public semitonesToNote(semitones: number): string {
     const note = this.semitonesToNoteMapping[Math.round(semitones)%12];
-    this.smoothingService.rotateBuffer(note);
+    // this.smoothingService.rotateBuffer(note);
 
-    const noteWithOctave = note + (Math.floor(semitones/12)+4)
+// <-9 - 2> - 4   <3 - 
+// <262 - 494> - 4   <523 - 988> - 5   <1047 - 1976> - 6
+    const noteWithOctave = note + (Math.floor((semitones+9)/12)+4)
     return noteWithOctave;
   }
 

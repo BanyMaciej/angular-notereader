@@ -43,7 +43,7 @@ export class SoundAnalyzerService {
     this.analyser.fftSize = 2048;
 		this.analyser.minDecibels = -45;
 		this.analyser.maxDecibels = -10;
-		// this.analyser.smoothingTimeConstant = 0.85;
+		this.analyser.smoothingTimeConstant = 0.85;
     this.audioSource.connect(this.analyser);
     this.oscilator.connect(this.audioContext.destination);
   }
@@ -58,6 +58,10 @@ export class SoundAnalyzerService {
 
   public arrayIndexToFrequency(index: number): number {
     return index * this.audioContext.sampleRate / this.analyser.fftSize;
+  }
+
+  public frequencyToArrayIndex(frequency: number): number {
+    return Math.round(frequency * this.analyser.fftSize / this.audioContext.sampleRate);
   }
 
   public calculateMainFreq(data: Array<number>) {

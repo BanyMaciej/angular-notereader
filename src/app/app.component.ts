@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { SoundAnalyzerService } from './services/sound-analyzer.service';
 import * as _ from 'underscore';
@@ -10,6 +10,7 @@ import * as _ from 'underscore';
 })
 export class AppComponent implements OnInit {
   freqData;
+  @ViewChild('a') emulator;
 
   constructor(private soundService: SoundAnalyzerService) {}
 
