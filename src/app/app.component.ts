@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
       } else {
         this.freqData = this.soundService.processSound();
       }
-      this.visualizer
+      this.visualizer.processSound(this.freqData)
       requestAnimationFrame(process);
     }
     process();
@@ -41,6 +41,6 @@ export class AppComponent implements OnInit {
   }
 
   public log() {
-    console.log()
+    console.log(this.soundService.calculatePower(this.freqData, {freq: this.emulator.emulatorFrequency, delta: 2}));
   }
 }

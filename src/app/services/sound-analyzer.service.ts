@@ -73,6 +73,17 @@ export class SoundAnalyzerService {
     return this.weightedAvg(maxFrequencyGroup);
   }
 
+  public calculatePower(data: Uint8Array, options?: {freq: number, delta: number}) {
+    var dataArray;
+    if(options) {
+      var index = this.frequencyToArrayIndex(options.freq);
+      dataArray = data.slice(index-options.delta, index+options.delta+1);
+    } else {
+      dataArray = data;
+    }
+    return _.reduce(dataArray, (m, v) => m + v);
+  }
+
   private group(data: Array<IFrequency>) {
     var output = [], temp = [];
     var grouping = false;

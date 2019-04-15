@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { SoundAnalyzerService } from '../../services/sound-analyzer.service';
 import { NotesRecognizerService } from '../../services/notes-recognizer.service';
 import { SmoothingService } from '../../services/smoothing.service';
@@ -10,20 +10,19 @@ import * as _ from 'underscore';
   templateUrl: './visualizer.component.html',
   styleUrls: ['./visualizer.component.css']
 })
-export class VisualizerComponent implements OnChanges {
-  @Input() data;
-  mainFreq;
+export class VisualizerComponent {
+  mainFrequency;
+  power;
   note;
 
   constructor(private soundAnalyserService: SoundAnalyzerService,
               private notesRecognizerService: NotesRecognizerService,
               private smoothingsService: SmoothingService) {}
 
-  processSound(dataArray) {
+  public processSound(dataArray) {
     this.visualize(dataArray);
-    this.mainFreq = this.soundAnalyserService.calculateMainFreq(dataArray);
-    const semitones = this.notesRecognizerService.calculateSemitones(this.mainFreq);
-    const currentNote = <Note>this.notesRecognizerService.semitonesToNote(semitones);//</
+    this.mainFrequency = this.soundAnalyserService.calculateMainFreq(dataArray);
+    const currentNote = this.notesRecognizerService.getNote(this.mainFrequency);//</
     this.note = this.smoothingsService.noteSmoother(currentNote);
   }
 

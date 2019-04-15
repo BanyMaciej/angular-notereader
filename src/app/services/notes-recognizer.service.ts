@@ -24,14 +24,15 @@ export class NotesRecognizerService {
 
   constructor() { }
 
-  public 
+  public getNote(frequency: number): string {
+    return this.semitonesToNote(this.calculateSemitones(frequency))
+  }
 
-
-  public calculateSemitones(frequency: number) {
+  private calculateSemitones(frequency: number) {
       return 12 * Math.log(frequency/this.refA4Frequency)/Math.log(2);
   }
 
-  public semitonesToNote(semitones: number): string {
+  private semitonesToNote(semitones: number): string {
     const noteId = semitones >= 0 ? Math.round(semitones)%12 : 12 + Math.round(semitones)%12;
     const note = this.semitonesToNoteMapping[noteId];
     const noteWithOctave = note + (Math.floor((semitones+9.5)/12)+4)
