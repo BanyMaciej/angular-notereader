@@ -38,10 +38,10 @@ export class SoundAnalyzerService {
 
   public init(stream) {
     this.audioSource = this.audioContext.createMediaStreamSource(stream);
-    this.analyser.fftSize = 2048;
+    this.analyser.fftSize = 4096;
 		this.analyser.minDecibels = -45;
 		this.analyser.maxDecibels = -10;
-		this.analyser.smoothingTimeConstant = 0.55;
+		this.analyser.smoothingTimeConstant = 0.7;
     this.gainNode.gain.value = 0;
 
     this.audioSource.connect(this.analyser);
@@ -69,8 +69,9 @@ export class SoundAnalyzerService {
     var frequencyArray = _.map(data, this.mapToFreq);
     var grouped = this.group(frequencyArray);
     var maxFrequencyGroup = _.max(grouped, group => _.max(group, item => item.frequency).amplitude);
+    var leveledGroup = _.filter(maxFrequencyGroup, f => f.amplitude > 50);
 
-    return this.weightedAvg(maxFrequencyGroup);
+    return this.weightedAvg(leveledGroup);
   }
 
   public calculatePower(data: Uint8Array, options?: {freq: number, delta: number}) {

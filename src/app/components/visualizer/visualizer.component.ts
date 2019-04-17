@@ -22,8 +22,10 @@ export class VisualizerComponent {
   public processSound(dataArray) {
     this.visualize(dataArray);
     this.mainFrequency = this.soundAnalyserService.calculateMainFreq(dataArray);
-    const currentNote = this.notesRecognizerService.getNote(this.mainFrequency);//</
+    const currentNote = this.notesRecognizerService.getNote(this.mainFrequency);
     this.note = this.smoothingsService.noteSmoother(currentNote);
+    this.power = this.soundAnalyserService.calculatePower(dataArray, {freq: this.mainFrequency, delta: 4})
+    
   }
 
   private visualize(dataArray) {
@@ -31,13 +33,17 @@ export class VisualizerComponent {
       var canvas = document.querySelector('canvas');
       var drawContext = canvas.getContext("2d");
       drawContext.clearRect(0, 0, canvas.width, canvas.height);
+      var gradient = drawContext.createLinearGradient(0, canvas.height, 0, 0);
+      gradient.addColorStop(0, "lime");
+      gradient.addColorStop(0.5, "yellow");
+      gradient.addColorStop(1, "red");
 
       for (var i = 0; i < dataArray.length; i++) {
         var barHeight = dataArray[i]/256*canvas.height;
         var topOffset = canvas.height - barHeight - 1;
         var barWidth = canvas.width/dataArray.length;
         var hue = i/dataArray.length * 360;
-        drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+        drawContext.fillStyle = gradient;//'hsl(' + hue + ', 100%, 50%)';
         drawContext.fillRect(i*barWidth, topOffset, barWidth, barHeight);
       }
     }

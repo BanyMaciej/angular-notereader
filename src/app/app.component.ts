@@ -41,6 +41,6 @@ export class AppComponent implements OnInit {
   }
 
   public log() {
-    console.log(this.soundService.calculatePower(this.freqData, {freq: this.emulator.emulatorFrequency, delta: 2}));
+    console.log(this.soundService.calculatePower(this.freqData));
   }
 }

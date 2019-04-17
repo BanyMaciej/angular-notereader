@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service'
-import { Note } from '../models/note'
 import * as _ from 'underscore'
 
 @Injectable()
 export class SmoothingService {
-  private buffer: Array<Note> = new Array
+  private buffer: Array<string> = new Array
 
   constructor(private settingsService: SettingsService) { }
 
-  public noteSmoother(nextElem?: Note): Note {
+  public noteSmoother(nextElem?: string): string {
     if(nextElem) this.rotateBuffer(nextElem);
     var out;
     var maxCount = _.chain(this.buffer).countBy().values().max().value();
@@ -21,7 +20,7 @@ export class SmoothingService {
     return out
   }
 
-  private rotateBuffer(nextElem: Note) {
+  private rotateBuffer(nextElem: string) {
     if(this.buffer.length >= this.settingsService.smoothingBufferSize) {
       this.buffer.shift();
       return this.rotateBuffer(nextElem);
