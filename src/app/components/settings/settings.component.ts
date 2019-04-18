@@ -46,7 +46,6 @@ export class SettingsComponent implements OnInit {
     this.smoothingBufferSize = +localStorage.getItem("smoothingBufferSize") || 10;
 
     this.updateSettings();
-    this.soundProcessor.updateAnalyserSettings();
   }
 
   onChangeEnd(changeContext) {
@@ -77,13 +76,16 @@ export class SettingsComponent implements OnInit {
   public autoSetup() {
     console.log("auto-setup");
     const process = (ref: number) => {
-      this.minDecibels = ref;
+      this.settingsService.minDecibels = ref;
       this.soundProcessor.updateAnalyserSettings();
-      if(this.soundProcessor.processSound().find(a => a > 0) !== undefined) {
+      console.log(this.soundProcessor.processSound().find(a => a > 0))
+      if(this.soundProcessor.processSound().find(a => a > 0) === undefined) {
         console.log("process");
         process(ref-1);
       } else {
         console.log("nice!");
+        this.minDecibels = ref;
+        this.saveValues();
         return;
       }
     }

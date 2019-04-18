@@ -36,7 +36,9 @@ export class SoundAnalyzerService {
     } else {
       dataArray = data;
     }
-    return _.reduce(dataArray, (m, v) => m + v);
+    var size = _.filter(data, v => v > 0).length;
+    return size > 0 ? _.reduce(dataArray, (m, v) => m + v)/size : 0;
+
   }
 
   private group(data: Array<IFrequency>) {
