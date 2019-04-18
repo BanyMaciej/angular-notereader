@@ -5,7 +5,7 @@ import { SettingsService } from './settings.service';
 import * as _ from 'underscore';
 @Injectable()
 export class SoundProcessorService {
-private audioContext;
+  public audioContext;
   public analyser;
   public oscilator;
   public gainNode;

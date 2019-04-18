@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingsService } from '../../services/settings.service';
-import { SoundAnalyzerService } from '../../services/sound-analyzer.service';
+import { SoundProcessorService } from '../../services/sound-processor.service';
 import { Options, ChangeContext } from 'ng5-slider';
 
 @Component({
@@ -34,7 +34,7 @@ export class SettingsComponent implements OnInit {
   };
 
   constructor(private settingsService: SettingsService,
-              private soundAnalyserService: SoundAnalyzerService) { }
+              private soundProcessor: SoundProcessorService) { }
 
   ngOnInit() {
     this.minDecibels = +localStorage.getItem("minDecibels") || -50;
@@ -46,7 +46,7 @@ export class SettingsComponent implements OnInit {
     this.smoothingBufferSize = +localStorage.getItem("smoothingBufferSize") || 10;
 
     this.updateSettings();
-    this.soundAnalyserService.updateAnalyserSettings();
+    this.soundProcessor.updateAnalyserSettings();
   }
 
   onChangeEnd(changeContext) {
@@ -61,7 +61,7 @@ export class SettingsComponent implements OnInit {
     this.settingsService.smoothingBufferSize = this.smoothingBufferSize;
 
     this.saveValues();
-    this.soundAnalyserService.updateAnalyserSettings();
+    this.soundProcessor.updateAnalyserSettings();
   }
 
   private saveValues() {
@@ -74,12 +74,12 @@ export class SettingsComponent implements OnInit {
     localStorage.setItem("smoothingBufferSize", this.smoothingBufferSize.toString());
   }
 
-  private autoSetup() {
+  public autoSetup() {
     console.log("auto-setup");
     const process = (ref: number) => {
       this.minDecibels = ref;
-      this.soundAnalyserService.updateAnalyserSettings();
-      if(this.soundAnalyserService.processSound().find(a => a > 0) !== undefined) {
+      this.soundProcessor.updateAnalyserSettings();
+      if(this.soundProcessor.processSound().find(a => a > 0) !== undefined) {
         console.log("process");
         process(ref-1);
       } else {

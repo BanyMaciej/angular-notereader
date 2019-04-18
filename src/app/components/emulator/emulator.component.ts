@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Options, ChangeContext } from 'ng5-slider';
-import { SoundAnalyzerService } from '../../services/sound-analyzer.service'
+import { SoundProcessorService } from '../../services/sound-processor.service';
+import { SoundAnalyzerService } from '../../services/sound-analyzer.service';
 
 @Component({
   selector: 'emulator',
@@ -16,25 +17,26 @@ export class EmulatorComponent {
   enabled: boolean = false;
   soundEnabled: boolean = false;
 
-  constructor(private soundService: SoundAnalyzerService) { 
-    soundService.oscilator.start();
-    soundService.gainNode.gain.value = 0;
+  constructor(private soundProcessor: SoundProcessorService,
+              private soundAnalyzer: SoundAnalyzerService) { 
+    soundProcessor.oscilator.start();
+    soundProcessor.gainNode.gain.value = 0;
   }
 
   generateFrequencyArray(): Uint8Array {
-    var index = this.soundService.frequencyToArrayIndex(this.emulatorFrequency);
-    var out =  new Uint8Array(this.soundService.getAnalyser().frequencyBinCount)
+    var index = this.soundAnalyzer.frequencyToArrayIndex(this.emulatorFrequency);
+    var out =  new Uint8Array(this.soundProcessor.analyser.frequencyBinCount)
     out[index] = 192;
     return out;
   }
 
   updateFrequency() {
-    this.soundService.oscilator.frequency.value = this.emulatorFrequency;
+    this.soundProcessor.oscilator.frequency.value = this.emulatorFrequency;
   }
 
   soundPlayer() {
-    this.soundService.oscilator.type = 'sine';
-    this.soundService.oscilator.frequency.value = this.emulatorFrequency;
-    this.soundService.gainNode.gain.value = this.soundEnabled ? 1 : 0;
+    this.soundProcessor.oscilator.type = 'sine';
+    this.soundProcessor.oscilator.frequency.value = this.emulatorFrequency;
+    this.soundProcessor.gainNode.gain.value = this.soundEnabled ? 1 : 0;
   }
 }

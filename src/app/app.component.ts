@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { SoundProcessorService } from './services/sound-processor.service';
 import { SoundAnalyzerService } from './services/sound-analyzer.service';
 import * as _ from 'underscore';
 
@@ -12,23 +13,26 @@ export class AppComponent implements OnInit {
   freqData;
   @ViewChild('frequencyEmulator') emulator;
   @ViewChild('visualizer') visualizer;
+  @ViewChild('settings') settings;
+  
 
-  constructor(private soundService: SoundAnalyzerService) {}
+  constructor(private soundProcessor: SoundProcessorService,
+              private soundAnalyzer: SoundAnalyzerService) {}
 
   ngOnInit() {
-    this.soundService.getUserMedia().subscribe( 
+    this.soundProcessor.getUserMedia().subscribe( 
       stream => this.processSound(stream),
       error => this.handleError(error)
     );
   }
 
   public processSound(stream) {
-    this.soundService.init(stream);
+    this.soundProcessor.init(stream);
     const process = () => {
       if(this.emulator.enabled) {
         this.freqData = this.emulator.generateFrequencyArray()
       } else {
-        this.freqData = this.soundService.processSound();
+        this.freqData = this.soundProcessor.processSound();
       }
       this.visualizer.processSound(this.freqData)
       requestAnimationFrame(process);
@@ -41,6 +45,7 @@ export class AppComponent implements OnInit {
   }
 
   public log() {
-    console.log(this.soundService.calculatePower(this.freqData));
+    console.log(this.soundAnalyzer.calculatePower(this.freqData));
+    this.settings.autoSetup();
   }
 }
