@@ -23,13 +23,16 @@ export class VisualizerComponent {
     this.visualize(dataArray);
     this.mainFrequency = this.soundAnalyserService.calculateMainFreq(dataArray);
     const currentNote = this.notesRecognizerService.getNote(this.mainFrequency);
-    this.note = this.smoothingsService.noteSmoother(currentNote);
+    if(currentNote) this.note = this.smoothingsService.noteSmoother(currentNote);
+    else this.note = undefined;
+    
     this.power = this.soundAnalyserService.calculatePower(dataArray, {freq: this.mainFrequency, delta: 4})
     
   }
 
   private visualize(dataArray) {
     if(dataArray) {
+
       var canvas = document.querySelector('canvas');
       var drawContext = canvas.getContext("2d");
       drawContext.clearRect(0, 0, canvas.width, canvas.height);

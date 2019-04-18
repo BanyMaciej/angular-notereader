@@ -38,9 +38,11 @@ export class NotesRecognizerService {
   }
 
   private semitonesToNote(semitones: number): string {
-    const noteId = semitones >= 0 ? Math.round(semitones)%12 : 12 + Math.round(semitones)%12;
-    const note = this.semitonesToNoteMapping[noteId];
-    const noteWithOctave = note + (Math.floor((semitones+9.5)/12)+4)
-    return noteWithOctave;
+    if(semitones) {
+      const noteId = semitones >= 0 ? Math.round(semitones)%12 : 12 + Math.round(semitones)%12;
+      const note = this.semitonesToNoteMapping[noteId];
+      const noteWithOctave = note + (Math.floor((semitones+9.5)/12)+4)
+      return noteWithOctave;
+    }
   }
 }
