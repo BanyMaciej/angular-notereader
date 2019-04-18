@@ -41,7 +41,7 @@ export class SoundAnalyzerService {
     this.analyser.fftSize = 4096;
 		this.analyser.minDecibels = -45;
 		this.analyser.maxDecibels = -10;
-		this.analyser.smoothingTimeConstant = 0.7;
+		this.analyser.smoothingTimeConstant = 0.6;
     this.gainNode.gain.value = 0;
 
     this.audioSource.connect(this.analyser);
