@@ -55,4 +55,13 @@ export class VisualizerComponent {
   click() {
     this.smoothingsService.logBuffer();
   }
+
+  xRatio: number;
+  yRatio: number;
+  mouseDown(event) {
+    var canvas = document.querySelector('canvas');
+    this.xRatio = event.clientX / canvas.width;
+    this.yRatio = event.clientY / canvas.height;
+    console.log(event.clientX + " - " + canvas.clientWidth);
+  }
 }

@@ -12,9 +12,10 @@ export class EmulatorComponent {
   emulatorFrequency: number = 527;
   emulatorSliderOptions: Options = {
     floor: 0,
-    ceil: 10000
+    ceil: 20000
   };
   enabled: boolean = false;
+  enabledv2: boolean = false;
   soundEnabled: boolean = false;
 
   constructor(private soundProcessor: SoundProcessorService,
@@ -29,6 +30,10 @@ export class EmulatorComponent {
     out[index] = 192;
     return out;
   }
+
+  // generateFrequencyArrayV2(): Uint8Array {
+  //   var index = 
+  // }
 
   updateFrequency() {
     this.soundProcessor.oscilator.frequency.value = this.emulatorFrequency;
