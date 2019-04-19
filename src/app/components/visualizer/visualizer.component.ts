@@ -32,7 +32,6 @@ export class VisualizerComponent {
 
   private visualize(dataArray) {
     if(dataArray) {
-
       var canvas = document.querySelector('canvas');
       var drawContext = canvas.getContext("2d");
       drawContext.clearRect(0, 0, canvas.width, canvas.height);
@@ -60,8 +59,22 @@ export class VisualizerComponent {
   yRatio: number;
   mouseDown(event) {
     var canvas = document.querySelector('canvas');
-    this.xRatio = event.clientX / canvas.width;
-    this.yRatio = event.clientY / canvas.height;
-    console.log(event.clientX + " - " + canvas.clientWidth);
+    this.xRatio = event.offsetX / canvas.clientWidth;
+    this.yRatio = 1 - event.offsetY / canvas.clientHeight;
+  }
+
+  mouseMove(event) {
+    if(this.xRatio && this.yRatio) {
+      var canvas = document.querySelector('canvas');
+      this.xRatio = event.offsetX / canvas.clientWidth;
+      this.yRatio = 1 - event.offsetY / canvas.clientHeight;
+
+      console.log(event);
+    }
+  }
+
+  mouseUp(event) {
+    this.xRatio = undefined;
+    this.yRatio = undefined;
   }
 }

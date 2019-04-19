@@ -29,8 +29,10 @@ export class AppComponent implements OnInit {
   public processSound(stream) {
     this.soundProcessor.init(stream);
     const process = () => {
-      if(this.emulator.enabled) {
-        this.freqData = this.emulator.generateFrequencyArray()
+      if(this.emulator.enabledv2) {
+        this.freqData = this.emulator.generateFrequencyArrayV2(this.visualizer);
+      } else if(this.emulator.enabled) {
+        this.freqData = this.emulator.generateFrequencyArray();
       } else {
         this.freqData = this.soundProcessor.processSound();
       }

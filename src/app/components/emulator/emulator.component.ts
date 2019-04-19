@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Options, ChangeContext } from 'ng5-slider';
 import { SoundProcessorService } from '../../services/sound-processor.service';
 import { SoundAnalyzerService } from '../../services/sound-analyzer.service';
+import { VisualizerComponent } from '../visualizer/visualizer.component'
 
 @Component({
   selector: 'emulator',
@@ -17,6 +18,7 @@ export class EmulatorComponent {
   enabled: boolean = false;
   enabledv2: boolean = false;
   soundEnabled: boolean = false;
+  soundFrequency: number = 0;
 
   constructor(private soundProcessor: SoundProcessorService,
               private soundAnalyzer: SoundAnalyzerService) { 
@@ -26,22 +28,36 @@ export class EmulatorComponent {
 
   generateFrequencyArray(): Uint8Array {
     var index = this.soundAnalyzer.frequencyToArrayIndex(this.emulatorFrequency);
-    var out =  new Uint8Array(this.soundProcessor.analyser.frequencyBinCount)
+    var out =  new Uint8Array(this.soundProcessor.analyser.frequencyBinCount);
+    this.soundFrequency = this.emulatorFrequency;
     out[index] = 192;
     return out;
   }
 
-  // generateFrequencyArrayV2(): Uint8Array {
-  //   var index = 
-  // }
+  generateFrequencyArrayV2(visualizer: VisualizerComponent): Uint8Array {
+    var out = new Uint8Array(this.soundProcessor.analyser.frequencyBinCount);
+    var index = Math.round(visualizer.xRatio * this.soundProcessor.analyser.frequencyBinCount);
+    var amp = Math.round(visualizer.yRatio * 256);
+
+    if(index && amp) {
+      this.soundFrequency = this.soundAnalyzer.arrayIndexToFrequency(index);
+      this.updateFrequency();
+      this.soundProcessor.gainNode.gain.value = visualizer.yRatio;
+      out[index] = amp;
+    } else {
+      this.soundProcessor.gainNode.gain.value = 0;
+    }
+
+    return out;
+  }
 
   updateFrequency() {
-    this.soundProcessor.oscilator.frequency.value = this.emulatorFrequency;
+    this.soundProcessor.oscilator.frequency.value = this.soundFrequency;
   }
 
   soundPlayer() {
     this.soundProcessor.oscilator.type = 'sine';
-    this.soundProcessor.oscilator.frequency.value = this.emulatorFrequency;
+    this.soundProcessor.oscilator.frequency.value = this.soundFrequency;
     this.soundProcessor.gainNode.gain.value = this.soundEnabled ? 1 : 0;
   }
 }

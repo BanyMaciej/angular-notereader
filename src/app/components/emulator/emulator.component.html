@@ -3,7 +3,11 @@
   Emulacja
 </label>
 <label>
-  <input type="checkbox" [(ngModel)]="soundEnabled" (change)="soundPlayer()" [disabled]="!enabled">
+  <input type="checkbox" [(ngModel)]="enabledv2">
+  Emulacja V2
+</label>
+<label>
+  <input type="checkbox" [(ngModel)]="soundEnabled" (change)="soundPlayer()">
   Dźwięk
 </label>
 <div *ngIf="enabled">
