@@ -19,13 +19,13 @@ export class SoundAnalyzerService {
     return Math.round(frequency * this.soundProcessor.analyser.fftSize / this.soundProcessor.audioContext.sampleRate);
   }
 
-  public calculateMainFreq(data: Array<number>) {
+  public calculateMainFreq(data: Uint8Array) {
     var frequencyArray = _.map(data, this.mapToFreq);
     var grouped = this.group(frequencyArray);
     var maxFrequencyGroup = _.max(grouped, group => _.max(group, item => item.frequency).amplitude);
     var leveledGroup = _.filter(maxFrequencyGroup, f => f.amplitude > this.settingsService.minimumLevel);
 
-    return this.weightedAvg(leveledGroup);
+    return this.weightedAvg(maxFrequencyGroup);
   }
 
   public calculatePower(data: Uint8Array, options?: {freq: number, delta: number}) {

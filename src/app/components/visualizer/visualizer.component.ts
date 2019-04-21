@@ -25,12 +25,13 @@ export class VisualizerComponent {
 
   public processSound(dataArray) {
     this.visualize(dataArray);
-    this.mainFrequency = this.soundAnalyser.calculateMainFreq(dataArray);
+    var dataToProcess =  _.map(dataArray, a => a > this.settingsService.minimumLevel ? a : 0);
+    this.mainFrequency = this.soundAnalyser.calculateMainFreq(dataToProcess);
     const currentNote = this.notesRecognizerService.getNote(this.mainFrequency);
     if(currentNote) this.note = this.smoothingsService.noteSmoother(currentNote);
     else this.note = undefined;
     
-    this.power = this.soundAnalyser.calculatePower(dataArray, {freq: this.mainFrequency, delta: 4})
+    this.power = this.soundAnalyser.calculatePower(dataToProcess);//, {freq: this.mainFrequency, delta: 4})
     
   }
 
