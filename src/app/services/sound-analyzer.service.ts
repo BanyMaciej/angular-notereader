@@ -23,7 +23,7 @@ export class SoundAnalyzerService {
     var frequencyArray = _.map(data, this.mapToFreq);
     var grouped = this.group(frequencyArray);
     var maxFrequencyGroup = _.max(grouped, group => _.max(group, item => item.frequency).amplitude);
-    var leveledGroup = _.filter(maxFrequencyGroup, f => f.amplitude > 50);
+    var leveledGroup = _.filter(maxFrequencyGroup, f => f.amplitude > this.settingsService.minimumLevel);
 
     return this.weightedAvg(leveledGroup);
   }

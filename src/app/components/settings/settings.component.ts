@@ -27,6 +27,12 @@ export class SettingsComponent implements OnInit {
     minRange: 1000
   };
 
+  minimumLevel: number;
+  minimumLevelOptions: Options = {
+    floor: 0,
+    ceil: 256
+  };
+
   smoothingBufferSize: number;
   smoothingSliderOptions: Options = {
     floor: 1,
@@ -37,18 +43,21 @@ export class SettingsComponent implements OnInit {
               private soundProcessor: SoundProcessorService) { }
 
   ngOnInit() {
-    this.minDecibels = +localStorage.getItem("minDecibels") || -50;
-    this.maxDecibels = +localStorage.getItem("maxDecibels") || -10;
-
-    this.minFrequency = +localStorage.getItem("minFrequency") || 200;
-    this.maxFrequency = +localStorage.getItem("maxFrequency") || 2000;
-
-    this.smoothingBufferSize = +localStorage.getItem("smoothingBufferSize") || 10;
+    this.applySettings(this.settingsService.getValues());
 
     this.updateSettings();
   }
 
-  onChangeEnd(changeContext) {
+  applySettings(settings) {
+    this.minDecibels = settings.minDecibels;
+    this.maxDecibels = settings.maxDecibels;
+    this.minFrequency = settings.minFrequency;
+    this.maxFrequency = settings.maxFrequency;
+    this.minimumLevel = settings.minimumLevel;
+    this.smoothingBufferSize = settings.smoothingBufferSize;
+  }
+
+  onChange(changeContext) {
     this.updateSettings();
   }
 
@@ -57,20 +66,11 @@ export class SettingsComponent implements OnInit {
     this.settingsService.maxDecibels = this.maxDecibels;
     this.settingsService.minFrequency = this.minFrequency;
     this.settingsService.maxFrequency = this.maxFrequency;
+    this.settingsService.minimumLevel = this.minimumLevel;
     this.settingsService.smoothingBufferSize = this.smoothingBufferSize;
 
-    this.saveValues();
+    this.settingsService.saveValues();
     this.soundProcessor.updateAnalyserSettings();
-  }
-
-  private saveValues() {
-    localStorage.setItem("minDecibels", this.minDecibels.toString());
-    localStorage.setItem("maxDecibels", this.maxDecibels.toString());
-
-    localStorage.setItem("minFrequency", this.minFrequency.toString());
-    localStorage.setItem("maxFrequency", this.maxFrequency.toString());
-
-    localStorage.setItem("smoothingBufferSize", this.smoothingBufferSize.toString());
   }
 
   public autoSetup() {
@@ -85,7 +85,7 @@ export class SettingsComponent implements OnInit {
       } else {
         console.log("nice!");
         this.minDecibels = ref;
-        this.saveValues();
+        this.settingsService.saveValues();
         return;
       }
     }
