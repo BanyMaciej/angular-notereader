@@ -28,9 +28,24 @@ export class NotesRecognizerService {
     return this.semitonesToNote(this.calculateSemitones(frequency))
   }
 
-  previous: string;
+  private previous: string;
+  private startTime: number;
   public noteRecognizer(note: string, power: number) {
-    
+    if(power > 0) {
+      if(note != this.previous) {
+        noteEnd;
+        new Note;
+      } else noteLasts;
+    } else {
+      noteEnd;
+    }
+
+
+    this.previous = note;
+  }
+
+  private newNote(note) {
+    this.startTime = performance.now();
   }
 
   private calculateSemitones(frequency: number) {
