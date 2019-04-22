@@ -30,9 +30,9 @@ export class VisualizerComponent {
     const currentNote = this.notesRecognizerService.getNote(this.mainFrequency);
     if(currentNote) this.note = this.smoothingsService.noteSmoother(currentNote);
     else this.note = undefined;
-    
-    this.power = this.soundAnalyser.calculatePower(dataToProcess);//, {freq: this.mainFrequency, delta: 4})
-    
+
+    this.power = this.soundAnalyser.calculatePower(dataToProcess, {freq: this.mainFrequency, delta: 3})
+    this.notesRecognizerService.noteRecognizer(this.note, this.power);
   }
 
   private visualize(dataArray) {

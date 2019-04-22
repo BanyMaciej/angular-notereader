@@ -33,11 +33,11 @@ export class NotesRecognizerService {
   public noteRecognizer(note: string, power: number) {
     if(power > 0) {
       if(note != this.previous) {
-        noteEnd;
-        new Note;
-      } else noteLasts;
-    } else {
-      noteEnd;
+        this.noteEnd(note);
+        this.newNote(note);
+      } else this.noteLasts(note);
+    } else if(this.previous) {
+      this.noteEnd(this.previous);
     }
 
 
@@ -46,6 +46,14 @@ export class NotesRecognizerService {
 
   private newNote(note) {
     this.startTime = performance.now();
+  }
+
+  private noteLasts(note) {
+  }
+
+  private noteEnd(note) {
+    var totalTime = performance.now() - this.startTime;
+    console.log("note: " + note + " lasts for: " + totalTime);
   }
 
   private calculateSemitones(frequency: number) {
