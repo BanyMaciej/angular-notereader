@@ -1,12 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Note } from '../models/note'
+
+export type NoteBase = 'A' | 'A#' | 'B' | 'C' | 'C#' | 'D' | 'D#' | 'E' | 'F' | 'F#' | 'G' | 'G#';
+export interface Tone {
+  noteBase: NoteBase;
+  octave: number;
+}
+
+export interface Note {
+  tone: string;
+  time: number;
+  startTime: number;
+}
 
 @Injectable()
 export class NotesRecognizerService {
 
   private refA4Frequency = 440; // Hz
 
-  private semitonesToNoteMapping: {[diff: number]: Note} = {
+  private semitonesToNoteMapping: {[diff: number]: NoteBase} = {
     0: 'A',
     1: 'A#',
     2: 'B',
@@ -30,6 +41,8 @@ export class NotesRecognizerService {
 
   private previous: string;
   private startTime: number;
+
+  public noteArray: Array<Note> = [];
   public noteRecognizer(note: string, power: number) {
     if(power > 0) {
       if(note && !this.previous && note !== this.previous) {
@@ -58,7 +71,8 @@ export class NotesRecognizerService {
 
   private noteEnd(note) {
     var totalTime = performance.now() - this.startTime;
-    console.log("note: " + this.previous + " lasts for: " + totalTime);
+    this.noteArray.push({tone: this.previous, time: totalTime, startTime: this.startTime})
+    console.log(this.noteArray)
   }
 
   private calculateSemitones(frequency: number) {
