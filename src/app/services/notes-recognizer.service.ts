@@ -32,14 +32,19 @@ export class NotesRecognizerService {
   private startTime: number;
   public noteRecognizer(note: string, power: number) {
     if(power > 0) {
-      if(note != this.previous) {
+      if(note && !this.previous && note !== this.previous) {
+        this.newNote(note);
+      }
+      if(note && this.previous && note === this.previous) {
+        this.noteLasts(note);
+      }
+      if(note && this.previous && note !== this.previous) {
         this.noteEnd(note);
         this.newNote(note);
-      } else this.noteLasts(note);
-    } else if(this.previous) {
-      this.noteEnd(this.previous);
+      }
+    } else if(!note && this.previous) {
+      this.noteEnd(note);
     }
-
 
     this.previous = note;
   }
@@ -53,7 +58,7 @@ export class NotesRecognizerService {
 
   private noteEnd(note) {
     var totalTime = performance.now() - this.startTime;
-    console.log("note: " + note + " lasts for: " + totalTime);
+    console.log("note: " + this.previous + " lasts for: " + totalTime);
   }
 
   private calculateSemitones(frequency: number) {

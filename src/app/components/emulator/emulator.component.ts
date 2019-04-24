@@ -39,13 +39,13 @@ export class EmulatorComponent {
     var index = Math.round(visualizer.xRatio * this.soundProcessor.analyser.frequencyBinCount);
     var amp = Math.round(visualizer.yRatio * 256);
 
+    this.soundProcessor.gainNode.gain.value = 0;
+
     if(index && amp) {
       this.soundFrequency = this.soundAnalyzer.arrayIndexToFrequency(index);
       this.updateFrequency();
-      this.soundProcessor.gainNode.gain.value = visualizer.yRatio;
+      this.soundProcessor.gainNode.gain.value = this.soundEnabled ? visualizer.yRatio : 0;  
       out[index] = amp;
-    } else {
-      this.soundProcessor.gainNode.gain.value = 0;
     }
 
     return out;
@@ -58,6 +58,5 @@ export class EmulatorComponent {
   soundPlayer() {
     this.soundProcessor.oscilator.type = 'sine';
     this.soundProcessor.oscilator.frequency.value = this.soundFrequency;
-    this.soundProcessor.gainNode.gain.value = this.soundEnabled ? 1 : 0;
   }
 }

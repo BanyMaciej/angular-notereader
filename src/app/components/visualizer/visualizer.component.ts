@@ -29,9 +29,11 @@ export class VisualizerComponent {
     this.mainFrequency = this.soundAnalyser.calculateMainFreq(dataToProcess);
     const currentNote = this.notesRecognizerService.getNote(this.mainFrequency);
     if(currentNote) this.note = this.smoothingsService.noteSmoother(currentNote);
-    else this.note = undefined;
-
-    this.power = this.soundAnalyser.calculatePower(dataToProcess, {freq: this.mainFrequency, delta: 3})
+    else {
+      this.smoothingsService.noteSmoother(currentNote);
+      this.note = undefined;
+    }
+    this.power = this.soundAnalyser.calculatePower(dataToProcess, {freq: this.mainFrequency, delta: 3});
     this.notesRecognizerService.noteRecognizer(this.note, this.power);
   }
 
@@ -87,8 +89,6 @@ export class VisualizerComponent {
       var canvas = document.querySelector('canvas');
       this.xRatio = event.offsetX / canvas.clientWidth;
       this.yRatio = 1 - event.offsetY / canvas.clientHeight;
-
-      console.log(event);
     }
   }
 

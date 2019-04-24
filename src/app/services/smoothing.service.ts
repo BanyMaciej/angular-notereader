@@ -9,14 +9,13 @@ export class SmoothingService {
   constructor(private settingsService: SettingsService) { }
 
   public noteSmoother(nextElem?: string): string {
-    if(nextElem) this.rotateBuffer(nextElem);
+    this.rotateBuffer(nextElem)
     var out;
     var maxCount = _.chain(this.buffer).countBy().values().max().value();
     var topNotes = _.chain(this.buffer).countBy().pairs().filter(p=>p[1] === maxCount).map(a=>a[0]).value();
     _.forEach(this.buffer, note => {
       if(_.contains(topNotes, note)) out = note;
     })
-    // console.log(out);
     return out
   }
 
