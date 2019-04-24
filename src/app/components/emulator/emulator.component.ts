@@ -16,7 +16,7 @@ export class EmulatorComponent {
     ceil: 20000
   };
   enabled: boolean = false;
-  enabledv2: boolean = true;
+  enabledv2: boolean = false;
   soundEnabled: boolean = false;
   soundFrequency: number = 0;
 

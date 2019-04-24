@@ -17,7 +17,6 @@ import { SoundProcessorService } from './services/sound-processor.service'
   imports:      [ BrowserModule, FormsModule, Ng5SliderModule ],
   declarations: [ AppComponent, VisualizerComponent, SettingsComponent, EmulatorComponent ],
   bootstrap:    [ AppComponent ],
-  providers:    [SoundAnalyzerService, NotesRecognizerService, SettingsService, SmoothingService, SoundProcessorService]
+  providers:    [ SoundAnalyzerService, NotesRecognizerService, SettingsService, SmoothingService, SoundProcessorService ]
 })
-export class AppModule {
-}
+export class AppModule {}

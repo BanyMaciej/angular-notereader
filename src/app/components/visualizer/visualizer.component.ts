@@ -17,6 +17,8 @@ export class VisualizerComponent {
   power;
   note;
 
+  arr: Array<string>;
+
   constructor(private soundAnalyser: SoundAnalyzerService,
               private soundProcessor: SoundProcessorService,
               private notesRecognizerService: NotesRecognizerService,
@@ -48,12 +50,18 @@ export class VisualizerComponent {
       var minLevel = (1 - this.settingsService.minimumLevel / 256) * canvas.height;
 
 
-      drawContext.fillStyle = 'rgb(255, 0, 0)'
+      drawContext.fillStyle = 'rgb(255, 0, 0)';
       drawContext.fillRect(minFreq, minLevel, maxFreq-minFreq, 0.25);
       drawContext.fillStyle = 'rgba(0, 0, 0, 0.5)';
       drawContext.fillRect(0, 0, minFreq, canvas.height);
       drawContext.fillRect(maxFreq, 0, canvas.width - maxFreq, canvas.height);
 
+      //Top line: 10%
+      var topLine = 0.1 * canvas.height;
+      drawContext.fillStyle = 'rgba(0, 0, 0, 255)';
+      for(var i = 0; i < 5; i++) {
+        drawContext.fillRect(0, topLine + i * 5, canvas.width, 0.7);
+      }
       
 
       var gradient = drawContext.createLinearGradient(0, canvas.height, 0, 0);
@@ -73,7 +81,10 @@ export class VisualizerComponent {
   }  
 
   click() {
-    this.smoothingsService.logBuffer();
+    // this.smoothingsService.logBuffer();
+      var notes = this.notesRecognizerService.noteArray;
+      var currentNotes = _.filter(notes, note => note.startTime > performance.now() - 5000);
+     console.log(currentNotes);
   }
 
   xRatio: number;

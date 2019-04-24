@@ -44,35 +44,35 @@ export class NotesRecognizerService {
 
   public noteArray: Array<Note> = [];
   public noteRecognizer(note: string, power: number) {
-    if(power > 0) {
-      if(note && !this.previous && note !== this.previous) {
-        this.newNote(note);
+    if(power > 0 && note) {
+      if(!this.previous && note !== this.previous) {
+        this.newNote();
       }
-      if(note && this.previous && note === this.previous) {
-        this.noteLasts(note);
+      if(this.previous && note === this.previous) {
+        this.noteLasts();
       }
-      if(note && this.previous && note !== this.previous) {
-        this.noteEnd(note);
-        this.newNote(note);
+      if(this.previous && note !== this.previous) {
+        this.noteEnd();
+        this.newNote();
       }
     } else if(!note && this.previous) {
-      this.noteEnd(note);
+      this.noteEnd();
     }
 
     this.previous = note;
   }
 
-  private newNote(note) {
+  private newNote() {
     this.startTime = performance.now();
   }
 
-  private noteLasts(note) {
+  private noteLasts() {
   }
 
-  private noteEnd(note) {
+  private noteEnd() {
     var totalTime = performance.now() - this.startTime;
     this.noteArray.push({tone: this.previous, time: totalTime, startTime: this.startTime})
-    console.log(this.noteArray)
+    // console.log(this.noteArray)
   }
 
   private calculateSemitones(frequency: number) {
