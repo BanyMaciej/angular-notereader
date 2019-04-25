@@ -61,8 +61,20 @@ export class VisualizerComponent {
       for(var i = 0; i < 5; i++) {
         drawContext.fillRect(0, topLine + i * 6, canvas.width, 0.7);
       }
-      drawContext.fill
-      
+
+
+      var refA4Top = topLine + 35;
+      var semitoneTopDiff = 3;
+      var drawNotes = _.filter(this.notesRecognizerService.noteArray, note => note.startTime > performance.now() - 5000);
+      _.forEach(drawNotes, note => {
+        var semitonesDiff = this.notesRecognizerService.noteToSemitones(note.tone);
+        var x = (5000 + note.startTime - performance.now())*canvas.width/5000;
+        var y = refA4Top - semitoneTopDiff * semitonesDiff;
+        var width = note.time * canvas.width / 5000;
+        var height = 6;
+        drawContext.fillRect(x, y, width, height);
+      });
+
 
       var gradient = drawContext.createLinearGradient(0, canvas.height, 0, 0);
       gradient.addColorStop(0, "lime");
@@ -83,15 +95,6 @@ export class VisualizerComponent {
   click() {
     // this.smoothingsService.logBuffer();
     var notes = this.notesRecognizerService.noteArray;
-    var currentNotes = _.filter(notes, note => note.startTime > performance.now() - 5000);
-    if(currentNotes.length > 0) {
-      var note = currentNotes[currentNotes.length-1];
-     
-    } else {
-      console.log("empty!");
-    }
-
-    console.log(currentNotes);
   }
 
   xRatio: number;

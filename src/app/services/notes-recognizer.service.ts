@@ -81,7 +81,12 @@ export class NotesRecognizerService {
     }
   }
 
-  private noteToSemitones(note: string): number {
-    
+  public noteToSemitones(note: string): number {
+    var result = note.match(/([A-G]#?)([0-9]+)/);
+    var baseSemitones = +this.noteToSemitonesMapping[result[1]];
+    var octave = +result[2];
+
+    var octaveModifier = baseSemitones >= 3 ? (octave-5)*12 : (octave-4)*12;
+    return baseSemitones + octaveModifier;
   }
 }
