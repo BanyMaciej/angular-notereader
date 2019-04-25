@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { SoundAnalyzerService } from '../../services/sound-analyzer.service';
 import { SoundProcessorService } from '../../services/sound-processor.service';
-import { NotesRecognizerService } from '../../services/notes-recognizer.service';
+import { NotesRecognizerService, NoteBase } from '../../services/notes-recognizer.service';
 import { SmoothingService } from '../../services/smoothing.service';
 import { SettingsService } from '../../services/settings.service';
-import { Note } from '../../models/note'
 import * as _ from 'underscore';
 
 @Component({  
@@ -60,8 +59,9 @@ export class VisualizerComponent {
       var topLine = 0.1 * canvas.height;
       drawContext.fillStyle = 'rgba(0, 0, 0, 255)';
       for(var i = 0; i < 5; i++) {
-        drawContext.fillRect(0, topLine + i * 5, canvas.width, 0.7);
+        drawContext.fillRect(0, topLine + i * 6, canvas.width, 0.7);
       }
+      drawContext.fill
       
 
       var gradient = drawContext.createLinearGradient(0, canvas.height, 0, 0);
@@ -82,9 +82,16 @@ export class VisualizerComponent {
 
   click() {
     // this.smoothingsService.logBuffer();
-      var notes = this.notesRecognizerService.noteArray;
-      var currentNotes = _.filter(notes, note => note.startTime > performance.now() - 5000);
-     console.log(currentNotes);
+    var notes = this.notesRecognizerService.noteArray;
+    var currentNotes = _.filter(notes, note => note.startTime > performance.now() - 5000);
+    if(currentNotes.length > 0) {
+      var note = currentNotes[currentNotes.length-1];
+     
+    } else {
+      console.log("empty!");
+    }
+
+    console.log(currentNotes);
   }
 
   xRatio: number;

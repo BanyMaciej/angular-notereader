@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as _ from 'underscore';
 
 export type NoteBase = 'A' | 'A#' | 'B' | 'C' | 'C#' | 'D' | 'D#' | 'E' | 'F' | 'F#' | 'G' | 'G#';
 export interface Tone {
@@ -32,6 +33,7 @@ export class NotesRecognizerService {
     11: 'G#'
   }
 
+  private noteToSemitonesMapping = _.invert(this.semitonesToNoteMapping);
 
   constructor() { }
 
@@ -44,17 +46,11 @@ export class NotesRecognizerService {
 
   public noteArray: Array<Note> = [];
   public noteRecognizer(note: string, power: number) {
-    if(power > 0 && note) {
-      if(!this.previous && note !== this.previous) {
-        this.newNote();
-      }
-      if(this.previous && note === this.previous) {
-        this.noteLasts();
-      }
-      if(this.previous && note !== this.previous) {
+    if(power > 0 && note && note !== this.previous) {
+      if(this.previous) {
         this.noteEnd();
-        this.newNote();
       }
+      this.newNote();
     } else if(!note && this.previous) {
       this.noteEnd();
     }
@@ -64,9 +60,6 @@ export class NotesRecognizerService {
 
   private newNote() {
     this.startTime = performance.now();
-  }
-
-  private noteLasts() {
   }
 
   private noteEnd() {
@@ -79,12 +72,16 @@ export class NotesRecognizerService {
       return 12 * Math.log(frequency/this.refA4Frequency)/Math.log(2);
   }
 
-  private semitonesToNote(semitones: number): string {
+  public semitonesToNote(semitones: number): string {
     if(semitones) {
       const noteId = semitones >= 0 ? Math.round(semitones)%12 : 12 + Math.round(semitones)%12;
       const note = this.semitonesToNoteMapping[noteId];
       const noteWithOctave = note + (Math.floor((semitones+9.5)/12)+4)
       return noteWithOctave;
     }
+  }
+
+  private noteToSemitones(note: string): number {
+    
   }
 }
