@@ -95,6 +95,7 @@ export class VisualizerComponent {
   click() {
     // this.smoothingsService.logBuffer();
     var notes = this.notesRecognizerService.noteArray;
+    
   }
 
   xRatio: number;

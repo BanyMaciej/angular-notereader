@@ -38,7 +38,7 @@ export class NotesRecognizerService {
   constructor() { }
 
   public getNote(frequency: number): string {
-    return this.semitonesToNote(this.calculateSemitones(frequency))
+    return this.semitonesToNote(this.frequencyToSemitones(frequency))
   }
 
   private previous: string;
@@ -68,8 +68,12 @@ export class NotesRecognizerService {
     // console.log(this.noteArray)
   }
 
-  private calculateSemitones(frequency: number) {
-      return 12 * Math.log(frequency/this.refA4Frequency)/Math.log(2);
+  public frequencyToSemitones(frequency: number) {
+    return 12 * Math.log(frequency/this.refA4Frequency)/Math.log(2);
+  }
+
+  public semitonesToFrequency(semitones: number) {
+    return Math.exp((semitones*Math.log(2) + 12*Math.log(this.refA4Frequency))/12);
   }
 
   public semitonesToNote(semitones: number): string {
