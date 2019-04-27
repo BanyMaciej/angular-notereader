@@ -16,6 +16,21 @@ export class VisualizerComponent {
   power;
   note;
 
+  private semitonesToPositionMapping: {[semitones: number]: number} = {
+    0: 0,
+    1: 0,
+    2: 1,
+    3: 2,
+    4: 2,
+    5: 3,
+    6: 3,
+    7: 4,
+    8: 5,
+    9: 5,
+    10: 6,
+    11: 6
+  }
+
   arr: Array<string>;
 
   constructor(private soundAnalyser: SoundAnalyzerService,
@@ -56,22 +71,22 @@ export class VisualizerComponent {
       drawContext.fillRect(maxFreq, 0, canvas.width - maxFreq, canvas.height);
 
       //Top line: 10%
-      var topLine = 0.1 * canvas.height;
+      var topLine = 0.2 * canvas.height;
       drawContext.fillStyle = 'rgba(0, 0, 0, 255)';
       for(var i = 0; i < 5; i++) {
-        drawContext.fillRect(0, topLine + i * 6, canvas.width, 0.7);
+        drawContext.fillRect(0, topLine + i * 7, canvas.width, 1);
       }
 
 
-      var refA4Top = topLine + 35;
-      var semitoneTopDiff = 3;
+      var refA4Top = topLine + 6*6 + 3.5;
+      var semitoneTopDiff = 3.5;
       var drawNotes = _.filter(this.notesRecognizerService.noteArray, note => note.startTime > performance.now() - 5000);
       _.forEach(drawNotes, note => {
-        var semitonesDiff = this.notesRecognizerService.noteToSemitones(note.tone);
+        var semitones = this.notesRecognizerService.noteToSemitones(note.tone);
         var x = (5000 + note.startTime - performance.now())*canvas.width/5000;
-        var y = refA4Top - semitoneTopDiff * semitonesDiff;
+        var y = refA4Top - semitoneTopDiff * (this.semitonesToPositionMapping[semitones%12] + Math.floor(semitones/12)*7);
         var width = note.time * canvas.width / 5000;
-        var height = 6;
+        var height = 7;
         drawContext.fillRect(x, y, width, height);
       });
 
@@ -93,6 +108,10 @@ export class VisualizerComponent {
   }  
 
   click() {
+      var canvas = document.querySelector('canvas');
+      var topLine = 0.1 * canvas.height;
+      var refA4Top = topLine + 6*7;
+
     // this.smoothingsService.logBuffer();
     var notes = this.notesRecognizerService.noteArray;
     

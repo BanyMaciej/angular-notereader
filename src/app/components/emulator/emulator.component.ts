@@ -10,12 +10,12 @@ import { VisualizerComponent } from '../visualizer/visualizer.component'
   styleUrls: ['./emulator.component.css']
 })
 export class EmulatorComponent {
-  emulatorFrequency: number = 527;
+  emulatorFrequency: number = 581;
   emulatorSliderOptions: Options = {
     floor: 0,
     ceil: 20000
   };
-  enabled: boolean = false;
+  enabled: boolean = true;
   enabledv2: boolean = false;
   soundEnabled: boolean = false;
   soundFrequency: number = 0;

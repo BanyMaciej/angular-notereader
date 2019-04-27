@@ -1,13 +1,13 @@
 <label>
-  <input type="checkbox" [(ngModel)]="enabled">
+  <input type="checkbox" [(ngModel)]="enabled" [(disabled)]="enabledv2">
   Emulacja
 </label>
 <label>
-  <input type="checkbox" [(ngModel)]="enabledv2">
+  <input type="checkbox" [(ngModel)]="enabledv2" [(disabled)]="enabled">
   Emulacja V2
 </label>
 <label>
-  <input type="checkbox" [(ngModel)]="soundEnabled" (change)="soundPlayer()">
+  <input type="checkbox" [(ngModel)]="soundEnabled" (change)="soundPlayer()" [(disabled)]="!enabled && !enabledv2">
   Dźwięk
 </label>
 <div *ngIf="enabled">
