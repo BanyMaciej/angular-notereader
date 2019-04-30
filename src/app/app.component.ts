@@ -26,13 +26,15 @@ export class AppComponent implements OnInit {
     );
   }
 
-  public processSound(stream) {
+  private processSound(stream) {
     this.soundProcessor.init(stream);
     const process = () => {
       if(this.emulator.enabledv2) {
         this.freqData = this.emulator.generateFrequencyArrayV2(this.visualizer);
       } else if(this.emulator.enabled) {
         this.freqData = this.emulator.generateFrequencyArray();
+      } else if(this.emulator.enabledv3) {
+        this.freqData = this.emulator.generateFrequencyArrayV3();
       } else {
         this.freqData = this.soundProcessor.processSound();
       }

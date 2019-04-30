@@ -16,19 +16,14 @@ export class VisualizerComponent {
   power;
   note;
 
-  private semitonesToPositionMapping: {[semitones: number]: number} = {
-    0: 0,
-    1: 0,
-    2: 1,
-    3: 2,
-    4: 2,
-    5: 3,
-    6: 3,
-    7: 4,
-    8: 5,
-    9: 5,
-    10: 6,
-    11: 6
+  private noteToPositionMapping: {[id: string]: number} = {
+    'A': 0,
+    'B': 1,
+    'C': 2,
+    'D': 3,
+    'E': 4,
+    'F': 5,
+    'G': 6
   }
 
   arr: Array<string>;
@@ -84,7 +79,14 @@ export class VisualizerComponent {
       _.forEach(drawNotes, note => {
         var semitones = this.notesRecognizerService.noteToSemitones(note.tone);
         var x = (5000 + note.startTime - performance.now())*canvas.width/5000;
-        var y = refA4Top - semitoneTopDiff * (this.semitonesToPositionMapping[semitones%12] + Math.floor(semitones/12)*7);
+
+        var splittedTone = note.tone.match(/([A-G])(#?)([0-9]+)/);
+        var position = this.noteToPositionMapping[splittedTone[1]];
+        var isSharp = splittedTone[2] === '#';
+        var octave = +splittedTone[3];
+
+        var y = refA4Top - semitoneTopDiff * (position + (octave - 4)*7);
+        drawContext.fillStyle = isSharp ? 'rgb(102, 0, 102)' : 'rgb(0, 0, 0)';
         var width = note.time * canvas.width / 5000;
         var height = 7;
         drawContext.fillRect(x, y, width, height);
