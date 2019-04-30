@@ -74,53 +74,54 @@ export class EmulatorComponent {
   generateFrequencyArrayV3(): Uint8Array {
     var out = new Uint8Array(this.soundProcessor.analyser.frequencyBinCount);
     var index = this.soundAnalyzer.frequencyToArrayIndex(this.emulatorFrequency);
-
-
+    if(this.keyDown) out[index] = 192;
+    this.soundProcessor.gainNode.gain.value = this.soundEnabled && this.keyDown ? 0.75 : 0; 
     return out;
   }
 
 
-  // keyDown: boolean;
-  // @HostListener('window:keyup', ['$event'])
-  // keyEventUp(event: KeyboardEvent) { 
-  //   this.keyDown = false;
-  //   this.soundProcessor.gainNode.gain.value = 0;
-  //   console.log("up");
-  // }
+  keyDown: boolean;
+  @HostListener('window:keyup', ['$event'])
+  keyEventUp(event: KeyboardEvent) { 
+    if(this.enabledv3) {
+      this.keyDown = false;
+    }
+  }
 
-  // @HostListener('window:keydown', ['$event'])
-  // keyEventDown(event: KeyboardEvent) {  
-  //   if(!this.keyDown){
-  //     switch(event.keyCode) {
-  //       case KEY_CODE.A: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(0);
-  //         break;
-  //       case KEY_CODE.As: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(1);
-  //         break;
-  //       case KEY_CODE.B: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(2);
-  //         break;
-  //       case KEY_CODE.C: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(3);
-  //         break;
-  //       case KEY_CODE.Cs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(4);
-  //         break;
-  //       case KEY_CODE.D: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(5);
-  //         break;
-  //       case KEY_CODE.Ds: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(6);
-  //         break;
-  //       case KEY_CODE.E: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(7);
-  //         break;
-  //       case KEY_CODE.F: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(8);
-  //         break;
-  //       case KEY_CODE.Fs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(9);
-  //         break;
-  //       case KEY_CODE.G: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(10);
-  //         break;
-  //       case KEY_CODE.Gs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(11);
-  //         break;
-  //       default: this.emulatorFrequency = 0;
-  //     }
-  //     this.keyDown = true;
-  //   }
-  // }
+  @HostListener('window:keydown', ['$event'])
+  keyEventDown(event: KeyboardEvent) {  
+    if(!this.keyDown && this.enabledv3){
+      switch(event.keyCode) {
+        case KEY_CODE.A: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(0);
+          break;
+        case KEY_CODE.As: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(1);
+          break;
+        case KEY_CODE.B: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(2);
+          break;
+        case KEY_CODE.C: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(3);
+          break;
+        case KEY_CODE.Cs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(4);
+          break;
+        case KEY_CODE.D: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(5);
+          break;
+        case KEY_CODE.Ds: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(6);
+          break;
+        case KEY_CODE.E: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(7);
+          break;
+        case KEY_CODE.F: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(8);
+          break;
+        case KEY_CODE.Fs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(9);
+          break;
+        case KEY_CODE.G: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(10);
+          break;
+        case KEY_CODE.Gs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(11);
+          break;
+        default: this.emulatorFrequency = 0;
+      }
+      this.updateFrequency();
+      this.keyDown = true;
+    }
+  }
 
   updateFrequency() {
     this.soundProcessor.oscilator.frequency.value = this.emulatorFrequency;
