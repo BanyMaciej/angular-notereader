@@ -17,13 +17,13 @@ export class VisualizerComponent {
   note;
 
   private noteToPositionMapping: {[id: string]: number} = {
-    'A': 0,
-    'B': 1,
-    'C': 2,
-    'D': 3,
-    'E': 4,
-    'F': 5,
-    'G': 6
+    'C': 0,
+    'D': 1,
+    'E': 2,
+    'F': 3,
+    'G': 4,
+    'A': 5,
+    'B': 6
   }
 
   arr: Array<string>;
@@ -73,7 +73,7 @@ export class VisualizerComponent {
       }
 
 
-      var refA4Top = topLine + 6*6 + 3.5;
+      var refC4Top = topLine + 7*5 - 3.5;
       var semitoneTopDiff = 3.5;
       var drawNotes = _.filter(this.notesRecognizerService.noteArray, note => note.startTime > performance.now() - 5000);
       _.forEach(drawNotes, note => {
@@ -85,7 +85,7 @@ export class VisualizerComponent {
         var isSharp = splittedTone[2] === '#';
         var octave = +splittedTone[3];
 
-        var y = refA4Top - semitoneTopDiff * (position + (octave - 4)*7);
+        var y = refC4Top - semitoneTopDiff * (position + (octave - 5)*7);
         drawContext.fillStyle = isSharp ? 'rgb(102, 0, 102)' : 'rgb(0, 0, 0)';
         var width = note.time * canvas.width / 5000;
         var height = 7;

@@ -33,7 +33,7 @@ export class EmulatorComponent {
   };
   enabled: boolean = false;
   enabledv2: boolean = false;
-  enabledv3: boolean = false;
+  enabledv3: boolean = true;
 
   soundEnabled: boolean = false;
 
@@ -92,11 +92,11 @@ export class EmulatorComponent {
   keyEventDown(event: KeyboardEvent) {  
     if(!this.keyDown && this.enabledv3){
       switch(event.keyCode) {
-        case KEY_CODE.A: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(0);
+        case KEY_CODE.A: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(12);
           break;
-        case KEY_CODE.As: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(1);
+        case KEY_CODE.As: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(13);
           break;
-        case KEY_CODE.B: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(2);
+        case KEY_CODE.B: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(14);
           break;
         case KEY_CODE.C: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(3);
           break;
