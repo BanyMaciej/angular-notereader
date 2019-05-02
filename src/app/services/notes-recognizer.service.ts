@@ -78,7 +78,7 @@ export class NotesRecognizerService {
   }
 
   public frequencyToSemitones(frequency: number) {
-    return 12 * Math.log(frequency/this.refA4Frequency)/Math.log(2);
+    if(frequency !== NaN) return Math.round(12 * Math.log(frequency/this.refA4Frequency)/Math.log(2));
   }
 
   public semitonesToFrequency(semitones: number) {
@@ -86,8 +86,9 @@ export class NotesRecognizerService {
   }
 
   public semitonesToNote(semitones: number): string {
-    if(semitones) {
-      const noteId = semitones >= 0 ? Math.round(semitones)%12 : 12 + Math.round(semitones)%12;
+
+    if(semitones !== undefined) {
+      const noteId = semitones >= 0 ? semitones%12 : 12 + semitones%12;
       const note = this.semitonesToNoteMapping[noteId];
       const noteWithOctave = note + (Math.floor((semitones+9.5)/12)+4)
       return noteWithOctave;

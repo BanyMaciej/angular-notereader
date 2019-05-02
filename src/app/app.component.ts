@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { SoundProcessorService } from './services/sound-processor.service';
 import { SoundAnalyzerService } from './services/sound-analyzer.service';
+import { NotesRecognizerService } from './services/notes-recognizer.service';
 import * as _ from 'underscore';
 
 @Component({
@@ -17,7 +18,8 @@ export class AppComponent implements OnInit {
   
 
   constructor(private soundProcessor: SoundProcessorService,
-              private soundAnalyzer: SoundAnalyzerService) {}
+              private soundAnalyzer: SoundAnalyzerService,
+              private notesRecognizer: NotesRecognizerService) {}
 
   ngOnInit() {
     this.soundProcessor.getUserMedia().subscribe( 
@@ -50,6 +52,7 @@ export class AppComponent implements OnInit {
 
   public log() {
     console.log(this.soundAnalyzer.calculatePower(this.freqData));
-    this.settings.autoSetup();
+    // this.settings.autoSetup();
+    console.log(this.notesRecognizer.semitonesToNote(0));
   }
 }

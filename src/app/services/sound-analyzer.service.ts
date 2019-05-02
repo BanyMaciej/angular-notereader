@@ -21,11 +21,15 @@ export class SoundAnalyzerService {
 
   public calculateMainFreq(data: Uint8Array) {
     var frequencyArray = _.map(data, this.mapToFreq);
-    var grouped = this.group(frequencyArray);
-    var maxFrequencyGroup = _.max(grouped, group => _.max(group, item => item.amplitude).amplitude);
-    var leveledGroup = _.filter(maxFrequencyGroup, f => f.amplitude > this.settingsService.minimumLevel);
+    var leveledFrequencyArray = _.map(frequencyArray, i => {
+      if(i.amplitude < this.settingsService.minimumLevel) i.amplitude = 0;
+      return i;
+    });
+    var grouped = this.group(leveledFrequencyArray);
+    var maxFrequencyGroup = _.max(grouped, group => _.max(group, i => i.amplitude).amplitude);
+    var maxFrequencyGroupv2 = _.min(grouped, group => _.min(group, i => i.frequency).frequency);
 
-    return this.weightedAvg(maxFrequencyGroup);
+    return this.weightedAvg(maxFrequencyGroupv2);
   }
 
   public calculatePower(data: Uint8Array, options?: {freq: number, delta: number}) {

@@ -26,8 +26,6 @@ export class VisualizerComponent {
     'B': 6
   }
 
-  arr: Array<string>;
-
   constructor(private soundAnalyser: SoundAnalyzerService,
               private soundProcessor: SoundProcessorService,
               private notesRecognizerService: NotesRecognizerService,

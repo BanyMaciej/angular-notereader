@@ -33,7 +33,7 @@ export class EmulatorComponent {
   };
   enabled: boolean = false;
   enabledv2: boolean = false;
-  enabledv3: boolean = true;
+  enabledv3: boolean = false;
 
   soundEnabled: boolean = false;
 
@@ -73,9 +73,11 @@ export class EmulatorComponent {
 
   generateFrequencyArrayV3(): Uint8Array {
     var out = new Uint8Array(this.soundProcessor.analyser.frequencyBinCount);
-    var index = this.soundAnalyzer.frequencyToArrayIndex(this.emulatorFrequency);
-    if(this.keyDown) out[index] = 192;
-    this.soundProcessor.gainNode.gain.value = this.soundEnabled && this.keyDown ? 0.75 : 0; 
+    if(this.emulatorFrequency > 0) {
+      var index = this.soundAnalyzer.frequencyToArrayIndex(this.emulatorFrequency);
+      if(this.keyDown) out[index] = 192;
+      this.soundProcessor.gainNode.gain.value = this.soundEnabled && this.keyDown ? 0.75 : 0; 
+    }
     return out;
   }
 
