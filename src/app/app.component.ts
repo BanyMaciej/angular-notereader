@@ -11,17 +11,19 @@ import * as _ from 'underscore';
   styleUrls: [ './app.component.css' ]
 })
 export class AppComponent implements OnInit {
-  freqData;
   @ViewChild('frequencyEmulator') emulator;
   @ViewChild('visualizer') visualizer;
   @ViewChild('settings') settings;
   
+  started = false;
 
   constructor(private soundProcessor: SoundProcessorService,
               private soundAnalyzer: SoundAnalyzerService,
               private notesRecognizer: NotesRecognizerService) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+  start() {
+    this.started = true;
     this.soundProcessor.getUserMedia().subscribe( 
       stream => this.processSound(stream),
       error => this.handleError(error)
@@ -31,16 +33,17 @@ export class AppComponent implements OnInit {
   private processSound(stream) {
     this.soundProcessor.init(stream);
     const process = () => {
+      var freqData;
       if(this.emulator.enabledv2) {
-        this.freqData = this.emulator.generateFrequencyArrayV2(this.visualizer);
+        freqData = this.emulator.generateFrequencyArrayV2(this.visualizer);
       } else if(this.emulator.enabled) {
-        this.freqData = this.emulator.generateFrequencyArray();
+        freqData = this.emulator.generateFrequencyArray();
       } else if(this.emulator.enabledv3) {
-        this.freqData = this.emulator.generateFrequencyArrayV3();
+        freqData = this.emulator.generateFrequencyArrayV3();
       } else {
-        this.freqData = this.soundProcessor.processSound();
+        freqData = this.soundProcessor.processSound();
       }
-      this.visualizer.processSound(this.freqData)
+      this.visualizer.processSound(freqData)
       requestAnimationFrame(process);
     }
     process();
@@ -51,8 +54,6 @@ export class AppComponent implements OnInit {
   }
 
   public log() {
-    console.log(this.soundAnalyzer.calculatePower(this.freqData));
-    // this.settings.autoSetup();
-    console.log(this.notesRecognizer.semitonesToNote(0));
+
   }
 }

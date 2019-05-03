@@ -1,6 +1,9 @@
-<settings-controls #settings></settings-controls>
-<emulator #frequencyEmulator></emulator>
-<visualizer #visualizer></visualizer>
-<div (click)="log()">
-  LOG
+<button *ngIf="!started" (click)="start()" >START</button>
+<div *ngIf="started">
+  <settings-controls #settings></settings-controls>
+  <emulator #frequencyEmulator></emulator>
+  <visualizer #visualizer></visualizer>
+  <div (click)="log()">
+    LOG
+  </div>
 </div>
