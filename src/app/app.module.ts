@@ -9,13 +9,15 @@ import { VisualizerComponent } from './components/visualizer/visualizer.componen
 import { NotesRecognizerService } from './services/notes-recognizer.service';
 import { SettingsService } from './services/settings.service';
 import { SettingsComponent } from './components/settings/settings.component';
-import { SmoothingService } from './services/smoothing.service'
+import { SmoothingService } from './services/smoothing.service';
+import { EmulatorComponent } from './components/emulator/emulator.component';
+import { SoundProcessorService } from './services/sound-processor.service';
+import { BeeperService } from './services/beeper.service'
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule, Ng5SliderModule ],
-  declarations: [ AppComponent, VisualizerComponent, SettingsComponent ],
+  declarations: [ AppComponent, VisualizerComponent, SettingsComponent, EmulatorComponent ],
   bootstrap:    [ AppComponent ],
-  providers:    [SoundAnalyzerService, NotesRecognizerService, SettingsService, SmoothingService]
+  providers:    [ SoundAnalyzerService, NotesRecognizerService, SettingsService, SmoothingService, SoundProcessorService, BeeperService ]
 })
-export class AppModule {
-}
+export class AppModule {}

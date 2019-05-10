@@ -2,70 +2,47 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IFrequency } from '../models/ifrequency';
 import { SettingsService } from './settings.service';
+import { SoundProcessorService } from './sound-processor.service'
 import * as _ from 'underscore';
 
 @Injectable()
 export class SoundAnalyzerService {
-  private audioContext;
-  private analyser;
-  private oscilator;
-  private gainNode;
 
-  private audioSource;
-
-  constructor(private settingsService: SettingsService) { 
-    this.audioContext = new AudioContext();
-    this.analyser = this.audioContext.createAnalyser();
-    this.oscilator = this.audioContext.createOscillator();
-    this.gainNode = this.audioContext.createGain();
-  }
-
-  public getAnalyser() {
-    return this.analyser;
-  }
-
-  public getUserMedia(): Observable<MediaStream> {
-    return new Observable(o => {
-      navigator.mediaDevices.getUserMedia({audio: true, video: false})
-      .then((stream) => o.next(stream))
-      .catch((err) => o.error(err));
-    })
-  }
-
-  public updateAnalyserSettings() {
-    console.log("sound nalayzer update!");
-		this.analyser.minDecibels = this.settingsService.minDecibels;
-		this.analyser.maxDecibels = this.settingsService.maxDecibels;
-  }
-
-  public init(stream) {
-    this.audioSource = this.audioContext.createMediaStreamSource(stream);
-    this.analyser.fftSize = 2048;
-		this.analyser.minDecibels = -45;
-		this.analyser.maxDecibels = -10;
-		// this.analyser.smoothingTimeConstant = 0.85;
-    this.audioSource.connect(this.analyser);
-    this.oscilator.connect(this.audioContext.destination);
-  }
-
-  public processSound(): Uint8Array {
-    var dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-    this.analyser.getByteFrequencyData(dataArray);
-    dataArray = _.map(dataArray, this.squareFilter);
-
-    return [].slice.call(dataArray);    
-  }
+  constructor(private settingsService: SettingsService,
+              private soundProcessor: SoundProcessorService) {}
 
   public arrayIndexToFrequency(index: number): number {
-    return index * this.audioContext.sampleRate / this.analyser.fftSize;
+    return index * this.soundProcessor.audioContext.sampleRate / this.soundProcessor.analyser.fftSize;
   }
 
-  public calculateMainFreq(data: Array<number>) {
-    var frequencyArray = _.map(data, this.mapToFreq);
-    var grouped = this.group(frequencyArray);
-    var maxFrequencyGroup = _.max(grouped, group => _.max(group, item => item.frequency).amplitude);
+  public frequencyToArrayIndex(frequency: number): number {
+    return Math.round(frequency * this.soundProcessor.analyser.fftSize / this.soundProcessor.audioContext.sampleRate);
+  }
 
-    return this.weightedAvg(maxFrequencyGroup);
+  public calculateMainFreq(data: Uint8Array) {
+    var frequencyArray = _.map(data, this.mapToFreq);
+    var leveledFrequencyArray = _.map(frequencyArray, i => {
+      if(i.amplitude < this.settingsService.minimumLevel) i.amplitude = 0;
+      return i;
+    });
+    var grouped = this.group(leveledFrequencyArray);
+    var maxFrequencyGroup = _.max(grouped, group => _.max(group, i => i.amplitude).amplitude);
+    var maxFrequencyGroupv2 = _.min(grouped, group => _.min(group, i => i.frequency).frequency);
+
+    return this.weightedAvg(maxFrequencyGroupv2);
+  }
+
+  public calculatePower(data: Uint8Array, options?: {freq: number, delta: number}) {
+    var dataArray;
+    if(options) {
+      var index = this.frequencyToArrayIndex(options.freq);
+      dataArray = data.slice(index-options.delta, index+options.delta+1);
+    } else {
+      dataArray = data;
+    }
+    var size = _.filter(data, v => v > 0).length;
+    return size > 0 ? _.reduce(dataArray, (m, v) => m + v)/size : 0;
+
   }
 
   private group(data: Array<IFrequency>) {
@@ -106,11 +83,5 @@ export class SoundAnalyzerService {
     var max = this.settingsService.maxFrequency;
     var freq = this.mapToFreq(v, i);
     return (freq.frequency > min && freq.frequency < max) ? v : 0;
-  }
-
-  public log() {
-    var min = this.settingsService.minFrequency;
-    var max = this.settingsService.maxFrequency;
-    console.log(min + " - " + max)
   }
 }

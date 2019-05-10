@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { SoundProcessorService } from './services/sound-processor.service';
 import { SoundAnalyzerService } from './services/sound-analyzer.service';
+import { NotesRecognizerService } from './services/notes-recognizer.service';
 import * as _ from 'underscore';
 
 @Component({
@@ -9,21 +11,39 @@ import * as _ from 'underscore';
   styleUrls: [ './app.component.css' ]
 })
 export class AppComponent implements OnInit {
-  freqData;
+  @ViewChild('frequencyEmulator') emulator;
+  @ViewChild('visualizer') visualizer;
+  @ViewChild('settings') settings;
+  
+  started = false;
 
-  constructor(private soundService: SoundAnalyzerService) {}
+  constructor(private soundProcessor: SoundProcessorService,
+              private soundAnalyzer: SoundAnalyzerService,
+              private notesRecognizer: NotesRecognizerService) {}
 
-  ngOnInit() {
-    this.soundService.getUserMedia().subscribe( 
+  ngOnInit() {}
+  start() {
+    this.started = true;
+    this.soundProcessor.getUserMedia().subscribe( 
       stream => this.processSound(stream),
       error => this.handleError(error)
     );
   }
 
-  public processSound(stream) {
-    this.soundService.init(stream);
+  private processSound(stream) {
+    this.soundProcessor.init(stream);
     const process = () => {
-      this.freqData = this.soundService.processSound();
+      var freqData;
+      if(this.emulator.enabledv2) {
+        freqData = this.emulator.generateFrequencyArrayV2(this.visualizer);
+      } else if(this.emulator.enabled) {
+        freqData = this.emulator.generateFrequencyArray();
+      } else if(this.emulator.enabledv3) {
+        freqData = this.emulator.generateFrequencyArrayV3();
+      } else {
+        freqData = this.soundProcessor.processSound();
+      }
+      this.visualizer.processSound(freqData)
       requestAnimationFrame(process);
     }
     process();
@@ -31,5 +51,9 @@ export class AppComponent implements OnInit {
 
   private handleError(error) {
     console.log(error);
+  }
+
+  public log() {
+
   }
 }

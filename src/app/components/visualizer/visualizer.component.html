@@ -1,3 +1,9 @@
-<p>main: {{mainFreq | number: '1.2-2'}}</p>
-<p>note: {{note}}
-<canvas (click)="click()"></canvas>
+<p>main: {{mainFrequency | number: '1.2-2'}}</p>
+<p>note: {{note}}</p>
+<p>siła: {{power | number: '1.0-0'}}</p>
+<canvas #canvas 
+  (click)="click()" 
+  (mousedown)="mouseDown($event)"
+  (mouseup)="mouseUp($event)"
+  (mousemove)="mouseMove($event)">
+</canvas>
