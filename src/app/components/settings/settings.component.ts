@@ -33,6 +33,13 @@ export class SettingsComponent implements OnInit {
     ceil: 256
   };
 
+  smoothingTime: number;
+  smoothingTimeSliderOptions: Options = {
+    floor: 0,
+    ceil: 1,
+    step: 0.05
+  };
+
   smoothingBufferSize: number;
   smoothingSliderOptions: Options = {
     floor: 1,
@@ -60,6 +67,7 @@ export class SettingsComponent implements OnInit {
     this.minFrequency = settings.minFrequency;
     this.maxFrequency = settings.maxFrequency;
     this.minimumLevel = settings.minimumLevel;
+    this.smoothingTime = settings.smoothingTime;
     this.smoothingBufferSize = settings.smoothingBufferSize;
     this.bpm = settings.bpm;
   }
@@ -71,6 +79,7 @@ export class SettingsComponent implements OnInit {
     this.settingsService.maxFrequency = this.maxFrequency;
     this.settingsService.minimumLevel = this.minimumLevel;
     this.settingsService.smoothingBufferSize = this.smoothingBufferSize;
+    this.settingsService.smoothingTime = this.smoothingTime;
     this.settingsService.bpm = this.bpm;
 
     this.settingsService.saveValues();

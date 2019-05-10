@@ -1,8 +1,8 @@
 <button *ngIf="!started" (click)="start()" >START</button>
 <div *ngIf="started">
-  <settings-controls #settings></settings-controls>
-  <emulator #frequencyEmulator></emulator>
   <visualizer #visualizer></visualizer>
+  <emulator #frequencyEmulator></emulator>
+  <settings-controls #settings></settings-controls>
   <div (click)="log()">
     LOG
   </div>

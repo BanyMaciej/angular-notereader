@@ -1,33 +1,51 @@
-<label for="decibelsSettings" (click)="autoSetup()">Min i max decybeli</label>
-<ng5-slider id="deciblesSettings" 
-  [(value)]="minDecibels" 
-  [(highValue)]="maxDecibels" 
-  [options]="decibelsSliderOptions"
-  (userChange)="updateSettings()">
-</ng5-slider>
-<label for="frequencySettings" >Min i max częstotliwości</label>
-<ng5-slider id="frequencySettings" 
-  [(value)]="minFrequency" 
-  [(highValue)]="maxFrequency" 
-  [options]="frequencySliderOptions"
-  (userChange)="updateSettings()">
-</ng5-slider>
-<label for="minimumLevelSettings" >Poziom minimalny</label>
-<ng5-slider id="minimumLevelSettings" 
-  [(value)]="minimumLevel"
-  [options]="minimumLevelOptions"
-  (userChange)="updateSettings()">
-</ng5-slider>
-<label for="smoothingSettings" >Kroki wygładzania</label>
-<ng5-slider id="smoothingSettings" 
-  [(value)]="smoothingBufferSize"
-  [options]="smoothingSliderOptions"
-  (userChange)="updateSettings()">
-</ng5-slider>
-<label for="bpmSettings" >BPM</label>
-<ng5-slider id="bpmSettings" 
-  [(value)]="bpm"
-  [options]="bpmOptions"
-  (userChange)="updateSettings()">
-</ng5-slider>
+<label for="decibelsSettings" (click)="autoSetup()">
+  Min i max decybeli
+  <ng5-slider id="deciblesSettings" 
+    [(value)]="minDecibels" 
+    [(highValue)]="maxDecibels" 
+    [options]="decibelsSliderOptions"
+    (userChange)="updateSettings()">
+  </ng5-slider>
+</label>
+<label for="frequencySettings" >
+  Min i max częstotliwości
+  <ng5-slider id="frequencySettings" 
+    [(value)]="minFrequency" 
+    [(highValue)]="maxFrequency" 
+    [options]="frequencySliderOptions"
+    (userChange)="updateSettings()">
+  </ng5-slider>
+</label>
+<label for="minimumLevelSettings" >
+  Poziom minimalny
+  <ng5-slider id="minimumLevelSettings" 
+    [(value)]="minimumLevel"
+    [options]="minimumLevelOptions"
+    (userChange)="updateSettings()">
+  </ng5-slider>
+</label>
+<label for="smoothingTimeSettings" >
+  Stała czasowa
+  <ng5-slider id="smoothingTimeSettings" 
+    [(value)]="smoothingTime"
+    [options]="smoothingTimeSliderOptions"
+    (userChange)="updateSettings()">
+  </ng5-slider>
+</label>
+<label for="smoothingSettings" >
+  Kroki wygładzania
+  <ng5-slider id="smoothingSettings" 
+    [(value)]="smoothingBufferSize"
+    [options]="smoothingSliderOptions"
+    (userChange)="updateSettings()">
+  </ng5-slider>
+</label>
+<label for="bpmSettings" >
+  BPM
+  <ng5-slider id="bpmSettings" 
+    [(value)]="bpm"
+    [options]="bpmOptions"
+    (userChange)="updateSettings()">
+  </ng5-slider>
+</label>
 

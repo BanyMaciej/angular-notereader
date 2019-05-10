@@ -11,6 +11,7 @@ export class SettingsService {
   private _minimumLevel = 10;
 
   private _smoothingBufferSize = 10;
+  private _smoothingTime = 0.2;
 
   private _bpm = 80;
 
@@ -57,6 +58,13 @@ export class SettingsService {
   set smoothingBufferSize(smoothingBufferSize: number) {
     this._smoothingBufferSize = smoothingBufferSize;
   }
+
+  get smoothingTime() {
+    return this._smoothingTime;
+  }
+  set smoothingTime(smoothingTime: number) {
+    this._smoothingTime = smoothingTime;
+  }
   
   get bpm() {
     return this._bpm;
@@ -73,6 +81,7 @@ export class SettingsService {
       maxFrequency: +localStorage.getItem("maxFrequency") || 2000,
       minimumLevel: +localStorage.getItem("minimumLevel") || 10,
       smoothingBufferSize: +localStorage.getItem("smoothingBufferSize") || 10,
+      smoothingTime: +localStorage.getItem("smoothingTime") || 0.2,
       bpm: +localStorage.getItem("bpm") || 80
     };
   }
@@ -87,6 +96,7 @@ export class SettingsService {
     localStorage.setItem("minimumLevel", this._minimumLevel.toString());
 
     localStorage.setItem("smoothingBufferSize", this._smoothingBufferSize.toString());
+    localStorage.setItem("smoothingTime", this._smoothingTime.toString());
 
     localStorage.setItem("bpm", this._bpm.toString());
   }

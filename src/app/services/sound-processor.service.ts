@@ -31,15 +31,16 @@ export class SoundProcessorService {
     console.log("sound nalayzer update!");
 		this.analyser.minDecibels = this.settingsService.minDecibels;
 		this.analyser.maxDecibels = this.settingsService.maxDecibels;
+		this.analyser.smoothingTimeConstant = this.settingsService.smoothingTime;
   }
 
   public init(stream) {
     console.log("init!");
     this.audioSource = this.audioContext.createMediaStreamSource(stream);
     this.analyser.fftSize = 4096;
-		this.analyser.minDecibels = -45;
-		this.analyser.maxDecibels = -10;
-		this.analyser.smoothingTimeConstant = 0.2;
+		this.analyser.minDecibels;
+		this.analyser.maxDecibels;
+		this.analyser.smoothingTimeConstant;
     this.gainNode.gain.value = 0;
 
     this.audioSource.connect(this.analyser);
