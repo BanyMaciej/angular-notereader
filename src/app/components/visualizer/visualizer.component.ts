@@ -16,6 +16,7 @@ export class VisualizerComponent {
   mainFrequency;
   power;
   note;
+  metronome: boolean = false;
 
   private noteToPositionMapping: {[id: string]: number} = {
     'C': 0,
@@ -80,7 +81,7 @@ export class VisualizerComponent {
       var now = performance.now();
       if(_.isEmpty(this.barArray) || this.barArray[this.barArray.length - 1] + barTime < now) {
         this.barArray.push(now);
-        this.beeper.beep();
+        if(this.metronome) this.beeper.beep();
       }
       _.forEach(this.barArray, barStartTime => {
         var x = (this.bufforTime + barStartTime - performance.now())*canvas.width/this.bufforTime;
@@ -100,7 +101,7 @@ export class VisualizerComponent {
         var isSharp = splittedTone[2] === '#';
         var octave = +splittedTone[3];
 
-        var y = refC4Top - semitoneTopDiff * (position + (octave - 5)*7);
+        var y = refC4Top - semitoneTopDiff * (position + (octave - 4)*7);
         drawContext.fillStyle = isSharp ? 'rgb(102, 0, 102)' : 'rgb(0, 0, 0)';
         var width = note.time * canvas.width / this.bufforTime;
         var height = 7;

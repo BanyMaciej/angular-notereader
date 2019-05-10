@@ -1,6 +1,10 @@
 <p>main: {{mainFrequency | number: '1.2-2'}}</p>
 <p>note: {{note}}</p>
 <p>siła: {{power | number: '1.0-0'}}</p>
+<label>
+  Metronom:
+  <input type="checkbox" [(ngModel)]="metronome">
+</label>
 <canvas #canvas 
   (click)="click()" 
   (mousedown)="mouseDown($event)"
