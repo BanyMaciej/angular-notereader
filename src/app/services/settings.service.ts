@@ -12,6 +12,8 @@ export class SettingsService {
 
   private _smoothingBufferSize = 10;
 
+  private _bpm = 80;
+
   constructor() { }
 
   get minDecibels() {
@@ -45,7 +47,6 @@ export class SettingsService {
   get minimumLevel() {
     return this._minimumLevel;
   }
-
   set minimumLevel(minimumLevel: number) {
     this._minimumLevel = minimumLevel;
   }
@@ -53,11 +54,17 @@ export class SettingsService {
   get smoothingBufferSize() {
     return this._smoothingBufferSize;
   }
-
   set smoothingBufferSize(smoothingBufferSize: number) {
     this._smoothingBufferSize = smoothingBufferSize;
   }
   
+  get bpm() {
+    return this._bpm;
+  }
+  set bpm(bpm: number) {
+    this._bpm = bpm;
+  }
+
   getValues() {
     return {
       minDecibels: +localStorage.getItem("minDecibels") || -50,
@@ -65,7 +72,8 @@ export class SettingsService {
       minFrequency: +localStorage.getItem("minFrequency") || 200,
       maxFrequency: +localStorage.getItem("maxFrequency") || 2000,
       minimumLevel: +localStorage.getItem("minimumLevel") || 10,
-      smoothingBufferSize: +localStorage.getItem("smoothingBufferSize") || 10
+      smoothingBufferSize: +localStorage.getItem("smoothingBufferSize") || 10,
+      bpm: +localStorage.getItem("bpm") || 80
     };
   }
 
@@ -79,5 +87,7 @@ export class SettingsService {
     localStorage.setItem("minimumLevel", this._minimumLevel.toString());
 
     localStorage.setItem("smoothingBufferSize", this._smoothingBufferSize.toString());
+
+    localStorage.setItem("bpm", this._bpm.toString());
   }
 }

@@ -4,6 +4,7 @@ import { SoundProcessorService } from '../../services/sound-processor.service';
 import { NotesRecognizerService, NoteBase } from '../../services/notes-recognizer.service';
 import { SmoothingService } from '../../services/smoothing.service';
 import { SettingsService } from '../../services/settings.service';
+import { BeeperService } from '../../services/beeper.service';
 import * as _ from 'underscore';
 
 @Component({  
@@ -30,7 +31,8 @@ export class VisualizerComponent {
               private soundProcessor: SoundProcessorService,
               private notesRecognizerService: NotesRecognizerService,
               private smoothingsService: SmoothingService,
-              private settingsService: SettingsService) {}
+              private settingsService: SettingsService,
+              private beeper: BeeperService) {}
 
   public processSound(dataArray) {
     this.visualize(dataArray);
@@ -46,6 +48,10 @@ export class VisualizerComponent {
     this.notesRecognizerService.noteRecognizer(this.note, this.power);
   }
 
+
+  
+  private barArray: Array<number> = [];
+  private bufforTime = 5000;
   private visualize(dataArray) {
     if(dataArray) {
       var canvas = document.querySelector('canvas');
@@ -63,20 +69,31 @@ export class VisualizerComponent {
       drawContext.fillRect(0, 0, minFreq, canvas.height);
       drawContext.fillRect(maxFreq, 0, canvas.width - maxFreq, canvas.height);
 
-      //Top line: 10%
+      //Top line: 20%
       var topLine = 0.2 * canvas.height;
       drawContext.fillStyle = 'rgba(0, 0, 0, 255)';
       for(var i = 0; i < 5; i++) {
         drawContext.fillRect(0, topLine + i * 7, canvas.width, 1);
       }
 
+      var barTime = 60 / this.settingsService.bpm * 4 * 1000;
+      var now = performance.now();
+      if(_.isEmpty(this.barArray) || this.barArray[this.barArray.length - 1] + barTime < now) {
+        this.barArray.push(now);
+        this.beeper.beep();
+      }
+      _.forEach(this.barArray, barStartTime => {
+        var x = (this.bufforTime + barStartTime - performance.now())*canvas.width/this.bufforTime;
+        drawContext.fillRect(x, 0, 1, canvas.height);
+      });
+
 
       var refC4Top = topLine + 7*5 - 3.5;
       var semitoneTopDiff = 3.5;
-      var drawNotes = _.filter(this.notesRecognizerService.noteArray, note => note.startTime > performance.now() - 5000);
+      var drawNotes = _.filter(this.notesRecognizerService.noteArray, note => note.startTime > performance.now() - this.bufforTime);
       _.forEach(drawNotes, note => {
         var semitones = this.notesRecognizerService.noteToSemitones(note.tone);
-        var x = (5000 + note.startTime - performance.now())*canvas.width/5000;
+        var x = (this.bufforTime + note.startTime - performance.now())*canvas.width/this.bufforTime;
 
         var splittedTone = note.tone.match(/([A-G])(#?)([0-9]+)/);
         var position = this.noteToPositionMapping[splittedTone[1]];
@@ -85,7 +102,7 @@ export class VisualizerComponent {
 
         var y = refC4Top - semitoneTopDiff * (position + (octave - 5)*7);
         drawContext.fillStyle = isSharp ? 'rgb(102, 0, 102)' : 'rgb(0, 0, 0)';
-        var width = note.time * canvas.width / 5000;
+        var width = note.time * canvas.width / this.bufforTime;
         var height = 7;
         drawContext.fillRect(x, y, width, height);
       });

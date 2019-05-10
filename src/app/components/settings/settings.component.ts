@@ -39,6 +39,12 @@ export class SettingsComponent implements OnInit {
     ceil: 50
   };
 
+  bpm: number;
+  bpmOptions: Options = {
+    floor: 20,
+    ceil: 250
+  };
+
   constructor(private settingsService: SettingsService,
               private soundProcessor: SoundProcessorService) { }
 
@@ -55,19 +61,17 @@ export class SettingsComponent implements OnInit {
     this.maxFrequency = settings.maxFrequency;
     this.minimumLevel = settings.minimumLevel;
     this.smoothingBufferSize = settings.smoothingBufferSize;
+    this.bpm = settings.bpm;
   }
 
-  onChange(changeContext) {
-    this.updateSettings();
-  }
-
-  private updateSettings() {
+  updateSettings() {
     this.settingsService.minDecibels = this.minDecibels;
     this.settingsService.maxDecibels = this.maxDecibels;
     this.settingsService.minFrequency = this.minFrequency;
     this.settingsService.maxFrequency = this.maxFrequency;
     this.settingsService.minimumLevel = this.minimumLevel;
     this.settingsService.smoothingBufferSize = this.smoothingBufferSize;
+    this.settingsService.bpm = this.bpm;
 
     this.settingsService.saveValues();
     this.soundProcessor.updateAnalyserSettings();
