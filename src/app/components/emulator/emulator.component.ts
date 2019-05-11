@@ -76,7 +76,7 @@ export class EmulatorComponent {
     if(this.emulatorFrequency > 0) {
       var index = this.soundAnalyzer.frequencyToArrayIndex(this.emulatorFrequency);
       if(this.keyDown) out[index] = 192;
-      this.soundProcessor.gainNode.gain.value = this.soundEnabled && this.keyDown ? 0.75 : 0; 
+      this.soundProcessor.gainNode.gain.value = this.soundEnabled && this.keyDown ? 0.4 : 0; 
     }
     return out;
   }

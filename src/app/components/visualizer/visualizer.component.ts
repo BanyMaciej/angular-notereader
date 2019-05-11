@@ -53,6 +53,7 @@ export class VisualizerComponent {
   
   private barArray: Array<number> = [];
   private bufforTime = 5000;
+  private lastTick = 0;
   private visualize(dataArray) {
     if(dataArray) {
       var canvas = document.querySelector('canvas');
@@ -77,12 +78,19 @@ export class VisualizerComponent {
         drawContext.fillRect(0, topLine + i * 7, canvas.width, 1);
       }
 
-      var barTime = 60 / this.settingsService.bpm * 4 * 1000;
+      var tickTime = 60 / this.settingsService.bpm * 1000;
       var now = performance.now();
-      if(_.isEmpty(this.barArray) || this.barArray[this.barArray.length - 1] + barTime < now) {
+      var metrum = 4;// /4
+
+      if(_.isEmpty(this.barArray) || this.barArray[this.barArray.length - 1] + metrum * tickTime < now) {
         this.barArray.push(now);
-        if(this.metronome) this.beeper.beep();
       }
+
+      if(this.metronome && this.lastTick < now - (tickTime)) {
+        this.beeper.beep();
+        this.lastTick = now;
+      }
+
       _.forEach(this.barArray, barStartTime => {
         var x = (this.bufforTime + barStartTime - performance.now())*canvas.width/this.bufforTime;
         drawContext.fillRect(x, 0, 1, canvas.height);
