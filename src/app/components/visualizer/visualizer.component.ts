@@ -54,6 +54,7 @@ export class VisualizerComponent {
   private barArray: Array<number> = [];
   private bufforTime = 5000;
   private lastTick = 0;
+  private tickCounter = 0;
   private visualize(dataArray) {
     if(dataArray) {
       var canvas = document.querySelector('canvas');
@@ -79,14 +80,15 @@ export class VisualizerComponent {
       }
 
       var tickTime = 60 / this.settingsService.bpm * 1000;
-      var now = performance.now();
       var metrum = 4;// /4
-
+      var now = performance.now();
       if(_.isEmpty(this.barArray) || this.barArray[this.barArray.length - 1] + metrum * tickTime < now) {
+        console.log(performance.now());
         this.barArray.push(now);
       }
 
       if(this.metronome && this.lastTick < now - (tickTime)) {
+        console.log(performance.now())
         this.beeper.beep();
         this.lastTick = now;
       }
