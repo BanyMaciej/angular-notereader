@@ -26,7 +26,7 @@ export enum KEY_CODE {
   styleUrls: ['./emulator.component.css']
 })
 export class EmulatorComponent {
-  emulatorFrequency: number = 581;
+  emulatorFrequency: number = 523;
   emulatorSliderOptions: Options = {
     floor: 0,
     ceil: 20000

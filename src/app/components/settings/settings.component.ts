@@ -15,7 +15,7 @@ export class SettingsComponent implements OnInit {
     floor: -100,
     ceil: 0,
     noSwitching: true,
-    minRange: 10
+    minRange: 30
   };
 
   minFrequency: number;

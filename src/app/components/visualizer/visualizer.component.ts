@@ -23,7 +23,7 @@ export class VisualizerComponent {
 
   private metrum = 3;
   private noteHeight = 8;
-  private bufforTime = 8000;
+  private bufforTime = 4000;
 
   private lastTick;
   private barArray: Array<number> = [];
@@ -139,11 +139,10 @@ export class VisualizerComponent {
 
       var splittedTone = note.tone.match(/([A-G])(#?)([0-9]+)/);
       var position = this.noteToPositionMapping[splittedTone[1]];
-      // if(note = "C4") console.log(position);
       var isSharp = splittedTone[2] === '#';
       var octave = +splittedTone[3];
 
-      var y = refC4Top - semitoneTopDiff * (position + (octave - 4)*this.noteHeight);
+      var y = refC4Top - semitoneTopDiff * (position + (octave - 4)*7);
       drawContext.fillStyle = isSharp ? 'rgb(102, 0, 102)' : 'rgb(0, 0, 0)';
       var width = note.time * canvas.width / this.bufforTime;
       var height = this.noteHeight;
