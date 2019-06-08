@@ -1,4 +1,9 @@
-canvas {
+.spectrum {
   background: gray;
+  width: 100%;
+}
+.notesSheet {
+  background: whitesmoke;
+  height: 200px;
   width: 100%;
 }

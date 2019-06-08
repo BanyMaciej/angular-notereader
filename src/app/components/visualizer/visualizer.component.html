@@ -5,7 +5,14 @@
   Metronom:
   <input type="checkbox" [(ngModel)]="metronome">
 </label>
-<canvas #canvas 
+<canvas #spectrogram class="spectrum"
+  (click)="click()" 
+  (mousedown)="mouseDown($event)"
+  (mouseup)="mouseUp($event)"
+  (mousemove)="mouseMove($event)">
+</canvas>
+
+<canvas #notesSheet class="notesSheet"
   (click)="click()" 
   (mousedown)="mouseDown($event)"
   (mouseup)="mouseUp($event)"

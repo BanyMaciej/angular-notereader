@@ -94,29 +94,29 @@ export class EmulatorComponent {
   keyEventDown(event: KeyboardEvent) {  
     if(!this.keyDown && this.enabledv3){
       switch(event.keyCode) {
-        case KEY_CODE.A: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(12);
+        case KEY_CODE.A: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(12-12);
           break;
-        case KEY_CODE.As: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(13);
+        case KEY_CODE.As: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(13-12);
           break;
-        case KEY_CODE.B: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(14);
+        case KEY_CODE.B: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(14-12);
           break;
-        case KEY_CODE.C: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(3);
+        case KEY_CODE.C: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(3-12);
           break;
-        case KEY_CODE.Cs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(4);
+        case KEY_CODE.Cs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(4-12);
           break;
-        case KEY_CODE.D: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(5);
+        case KEY_CODE.D: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(5-12);
           break;
-        case KEY_CODE.Ds: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(6);
+        case KEY_CODE.Ds: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(6-12);
           break;
-        case KEY_CODE.E: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(7);
+        case KEY_CODE.E: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(7-12);
           break;
-        case KEY_CODE.F: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(8);
+        case KEY_CODE.F: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(8-12);
           break;
-        case KEY_CODE.Fs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(9);
+        case KEY_CODE.Fs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(9-12);
           break;
-        case KEY_CODE.G: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(10);
+        case KEY_CODE.G: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(10-12);
           break;
-        case KEY_CODE.Gs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(11);
+        case KEY_CODE.Gs: this.emulatorFrequency = this.notesRecognizer.semitonesToFrequency(11-12);
           break;
         default: this.emulatorFrequency = 0;
       }
