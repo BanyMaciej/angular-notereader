@@ -17,8 +17,7 @@ export class AppComponent implements OnInit {
   started = false;
 
   constructor(private soundProcessor: SoundProcessorService,
-              private soundAnalyzer: SoundAnalyzerService,
-              ) {}
+              private soundAnalyzer: SoundAnalyzerService) {}
 
   ngOnInit() {}
   start() {

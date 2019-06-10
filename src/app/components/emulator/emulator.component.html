@@ -1,24 +1,26 @@
-<label>
-  <input type="checkbox" [(ngModel)]="enabled" [(disabled)]="enabledv2 || enabledv3">
-  Emulacja
-</label>
-<label>
-  <input type="checkbox" [(ngModel)]="enabledv2" [(disabled)]="enabled || enabledv3">
-  Emulacja V2
-</label>
-<label>
-  <input type="checkbox" [(ngModel)]="enabledv3" [(disabled)]="enabled || enabledv2">
-  Emulacja V3
-</label>
-<label>
-  <input type="checkbox" [(ngModel)]="soundEnabled" [(disabled)]="!enabled && !enabledv2 && !enabledv3">
-  Dźwięk
-</label>
-<div *ngIf="enabled">
-  <label for="emulatorFrequency" >Częstotliwość</label>
-  <ng5-slider id="emulatorFrequency" 
-    [(value)]="emulatorFrequency"
-    [options]="emulatorSliderOptions"
-    (userChange)="updateFrequency($event)">
-  </ng5-slider>
+<div>
+  <label>
+    <input type="checkbox" [(ngModel)]="enabled" [(disabled)]="enabledv2 || enabledv3">
+    Emulacja
+  </label>
+  <label>
+    <input type="checkbox" [(ngModel)]="enabledv2" [(disabled)]="enabled || enabledv3">
+    Emulacja V2
+  </label>
+  <label>
+    <input type="checkbox" [(ngModel)]="enabledv3" [(disabled)]="enabled || enabledv2">
+    Emulacja V3
+  </label>
+  <label>
+    <input type="checkbox" [(ngModel)]="soundEnabled" [(disabled)]="!enabled && !enabledv2 && !enabledv3">
+    Dźwięk
+  </label>
+  <div *ngIf="enabled">
+    <label for="emulatorFrequency" >Częstotliwość</label>
+    <ng5-slider id="emulatorFrequency" 
+      [(value)]="emulatorFrequency"
+      [options]="emulatorSliderOptions"
+      (userChange)="updateFrequency($event)">
+    </ng5-slider>
+  </div>
 </div>

@@ -19,13 +19,13 @@ export class VisualizerComponent {
   mainFrequency;
   power;
   note;
-  metronome: boolean = false;
+  metronome: boolean = true;
 
-  private metrum = 3;
+  private metrum = 1;
   private noteHeight = 8;
-  private bufforTime = 4000;
+  private bufforTime = 8000;
 
-  private lastTick;
+  private lastTick = 0;
   private barArray: Array<number> = [];
   private tickCounter = 0;
 
@@ -111,16 +111,12 @@ export class VisualizerComponent {
   private drawBars(canvas, drawContext) {
     var tickTime = 60 / this.settingsService.bpm * 1000;
     var now = performance.now();
-    if(_.isEmpty(this.barArray) || this.barArray[this.barArray.length - 1] + this.metrum * tickTime < now) {
-      this.barArray.push(now);
-      if(this.metronome && !this.lastTick) {
-        this.lastTick = 1;
-      }
-    }
-
-    if(this.metronome && this.lastTick && this.lastTick < now - (tickTime)) {
+    if(this.metronome && this.lastTick < now - (tickTime) ) {
       this.beeper.beep();
       this.lastTick = now;
+    }
+    if(_.isEmpty(this.barArray) || this.barArray[this.barArray.length - 1] + this.metrum * tickTime < now) {
+      this.barArray.push(now);
     }
 
     _.forEach(this.barArray, barStartTime => {
