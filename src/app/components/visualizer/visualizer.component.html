@@ -1,11 +1,18 @@
-<p>main: {{mainFrequency | number: '1.2-2'}}</p>
-<p>note: {{note}}</p>
-<p>siła: {{power | number: '1.0-0'}}</p>
+<div>main: {{mainFrequency | number: '1.2-2'}}</div>
+<div>note: {{note}}</div>
+<div>siła: {{power | number: '1.0-0'}}</div>
 <label>
   Metronom:
   <input type="checkbox" [(ngModel)]="metronome">
 </label>
-<canvas #canvas 
+<canvas #spectrogram class="spectrum"
+  (click)="click()" 
+  (mousedown)="mouseDown($event)"
+  (mouseup)="mouseUp($event)"
+  (mousemove)="mouseMove($event)">
+</canvas>
+
+<canvas #notesSheet class="notesSheet"
   (click)="click()" 
   (mousedown)="mouseDown($event)"
   (mouseup)="mouseUp($event)"
