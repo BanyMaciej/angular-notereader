@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { SoundProcessorService } from './services/sound-processor.service';
 import { SoundAnalyzerService } from './services/sound-analyzer.service';
-import { NotesRecognizerService } from './services/notes-recognizer.service';
 import * as _ from 'underscore';
 
 @Component({
@@ -19,7 +18,7 @@ export class AppComponent implements OnInit {
 
   constructor(private soundProcessor: SoundProcessorService,
               private soundAnalyzer: SoundAnalyzerService,
-              private notesRecognizer: NotesRecognizerService) {}
+              ) {}
 
   ngOnInit() {}
   start() {
