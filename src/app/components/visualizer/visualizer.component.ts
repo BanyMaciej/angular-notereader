@@ -19,9 +19,9 @@ export class VisualizerComponent {
   mainFrequency;
   power;
   note;
-  metronome: boolean = true;
+  metronome: boolean = false;
 
-  private metrum = 1;
+  private metrum = 2;
   private noteHeight = 8;
   private bufforTime = 8000;
 

@@ -37,7 +37,7 @@ export class SoundProcessorService {
   public init(stream) {
     console.log("init!");
     this.audioSource = this.audioContext.createMediaStreamSource(stream);
-    this.analyser.fftSize = 4096;
+    this.analyser.fftSize = 8192;
 		this.analyser.minDecibels;
 		this.analyser.maxDecibels;
 		this.analyser.smoothingTimeConstant;
